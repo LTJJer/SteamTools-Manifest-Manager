@@ -27,6 +27,7 @@ SearchDialog::~SearchDialog()
 }
 
 
+
 void SearchDialog::on_btn_Cancel_clicked()
 {
     this->close();

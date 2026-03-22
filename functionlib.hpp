@@ -8,13 +8,16 @@
 
 
 
-constexpr int itemDataFilePath  = Qt::UserRole + 0;
-constexpr int itemDataGameName  = Qt::UserRole + 1;
-constexpr int itemDataGameAppID = Qt::UserRole + 2;
+namespace Constant
+{
+    constexpr int filePathRole  = Qt::UserRole + 0;
+    constexpr int gameNameRole  = Qt::UserRole + 1;
+    constexpr int appidRole = Qt::UserRole + 2;
 
-constexpr char enabledSuffix[]  = "lua";
-constexpr char disabledSuffix[] = "disabled";
-constexpr char disabledItemStyleSheet[] = "color: #FF4444";
+    constexpr char luaEnabledSuffix[]  = "lua";
+    constexpr char luaDisabledSuffix[] = "disabled";
+    constexpr char ItemDisabledStyleSheet[] = "color: #FF4444";
+}
 
 
 

@@ -53,7 +53,7 @@ void AddLuaFileDialog::import(const QString &path)
 
 
     // 文件
-    const QString fileBaseName = QFileInfo(path).baseName();
+    const QString fileBaseName = QFileInfo(path).completeBaseName();
 
     ui->le_FileName->setText(fileBaseName);
 
@@ -66,7 +66,7 @@ void AddLuaFileDialog::import(const QString &path)
         return;
     }
 
-    const QString content = QString::fromUtf8(file.readAll());
+    const QString content = QTextStream(&file).readAll();
 
     ui->ContentEdit->setPlainText(content);
 
@@ -117,7 +117,7 @@ void AddLuaFileDialog::on_OKButton_clicked()
     QString appid        = (aAppid && info.hasAppID) ? info.appID : ui->le_Appid->text();
 
     QString fileBaseName = !aFile ? ui->le_FileName->text() : appid;
-    QString filePath     = QDir(this->luaDir).filePath((fileBaseName.endsWith(QString(".%1").arg(enabledSuffix)) || fileBaseName.endsWith(QString(".%1").arg(disabledSuffix))) ? fileBaseName : (QString("%1.%2").arg(fileBaseName, enabledSuffix)));
+    QString filePath     = QDir(this->luaDir).filePath((fileBaseName.endsWith(QString(".%1").arg(Constant::luaEnabledSuffix)) || fileBaseName.endsWith(QString(".%1").arg(Constant::luaDisabledSuffix))) ? fileBaseName : (QString("%1.%2").arg(fileBaseName, Constant::luaEnabledSuffix)));
 
 
 

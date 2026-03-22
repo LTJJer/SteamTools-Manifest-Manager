@@ -60,8 +60,7 @@ void closeSteam()
 
 void closeSteamDetached()
 {
-    QProcess process;
-    process.startDetached("taskkill", QStringList() << "/f" << "/im" << "Steam.exe");
+    QProcess::startDetached("taskkill", QStringList() << "/f" << "/im" << "Steam.exe");
 }
 
 void restartSteam(const QString &steamFilePath, int interval)
@@ -178,6 +177,7 @@ void formatLua(QStringList &content, const QString &name, const QString &appid)
     {
         content[i] = content[i].trimmed();
 
+        // addappid 已足够，setManifestid 不需要，所以非 addappid 全删
         if (!content[i].startsWith("addappid"))
         {
             content.removeAt(i);
@@ -272,7 +272,7 @@ FileEditErrorType editLuaFile(const QString &filePath, const QString &gameName, 
         return errorType | OpenFileFailed;
     }
 
-    QString content = formattedLua(QString::fromUtf8(file.readAll()), gameName, gameAppID);
+    QString content = formattedLua(QTextStream(&file).readAll(), gameName, gameAppID);
     file.close();
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))

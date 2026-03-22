@@ -15,9 +15,6 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-signals:
-    void refreshed();
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -63,8 +60,6 @@ private slots:
 
 private:
     void addItem(const QString &path, const QString &name, const QString &appID, bool select = true, bool sort = true);
-
-    QStringList getDragPaths(QMimeData *mime);
 
 private:
     Ui::MainWindow *ui;
