@@ -27,11 +27,6 @@ private:
     void dropEvent(QDropEvent *event) override;
 
 private:
-    // Returning empty indicats invalidity.
-    QString getFilePath(const QMimeData *mime) const;
-
-    bool checkDragAcceptability(const QMimeData *mime) const;
-
     void import(const QString &path);
 
 private:

@@ -290,4 +290,22 @@ FileEditErrorType editLuaFile(const QString &filePath, const QString &gameName, 
 
     return errorType;
 }
+
+QStringList getMimeDataPaths(const QMimeData *mime)
+{
+    QStringList paths;
+
+    if (mime && mime->hasUrls())
+    {
+        for (const QUrl &url : mime->urls())
+        {
+            if (url.isLocalFile())
+            {
+                paths.append(url.toLocalFile());
+            }
+        }
+    }
+
+    return paths;
+}
 }

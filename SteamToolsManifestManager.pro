@@ -75,9 +75,8 @@ DESTDIR = $${PWD}/bin/$${BUILD_TYPE}
 # 部署
 win32
 {
-    BUILD_EXE = $$replace(DESTDIR, /, \\)\\$${EXE_PATH}
-
     EXE_PATH = $${TARGET}.exe
+    BUILD_EXE = $$replace(DESTDIR, /, \\)\\$${EXE_PATH}
 
     DEPLOY_ROOT = D:\\$${TARGET}
     DEPLOY_EXE = $${DEPLOY_ROOT}\\$${EXE_PATH}
@@ -88,16 +87,12 @@ win32
 
     # 1: $${WINDEPLOYQT}
     # 2: $${BUILD_EXE}
-    # 3: $${DEPLOY_ROOT}
-    # 4: $${DEPLOY_EXE}
+    # 3: $${DEPLOY_EXE}
 
     deploy.commands = $${PWD}/deploy.bat \
                     \"$${WINDEPLOYQT}\"  \
                     \"$${BUILD_EXE}\"    \
-                    \"$${DEPLOY_ROOT}\"  \
                     \"$${DEPLOY_EXE}\"
-
-
-
-    INSTALLS += deploy
+    
+    QMAKE_EXTRA_TARGETS += deploy
 }

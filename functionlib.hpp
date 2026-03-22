@@ -3,6 +3,8 @@
 #include <QFlags>
 #include <QStringList>
 #include <QFile>
+#include <qevent.h>
+#include <QMimeData>
 
 
 
@@ -86,4 +88,8 @@ FileEditErrorType renameFile(QFile *file, const QString &newName);
 FileEditErrorType renameFile(const QString &filePath, const QString &newName);
 
 FileEditErrorType editLuaFile(const QString &filePath, const QString &gameName, const QString &gameAppID, bool shouleRename = true);
+
+
+
+QStringList getMimeDataPaths(const QMimeData *mime);
 }

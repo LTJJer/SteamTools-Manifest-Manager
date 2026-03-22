@@ -49,6 +49,33 @@ MainWindow::~MainWindow()
 
 
 
+// QWidget interface
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (!FunctionLib::getMimeDataPaths(event->mimeData()).isEmpty()) event->acceptProposedAction();
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    const QStringList paths = FunctionLib::getMimeDataPaths(event->mimeData());
+
+    if (paths.isEmpty()) return;
+
+    for (const QString &path : paths)
+    {
+        QFileInfo info(path);
+
+        const QString newPath = QDir(this->LuaDir).filePath(info.fileName());
+
+        if (QFile::exists(newPath)) QFile::remove(newPath);
+        QFile::copy(path, newPath);
+    }
+
+    this->refresh();
+}
+
+
+
 void MainWindow::refresh()
 {
     QListWidgetItem *lastSelectedItem = ui->lst_Items->currentItem();
@@ -123,6 +150,8 @@ void MainWindow::editItem(QListWidgetItem *item)
     editDialog.exec();
 }
 
+
+
 void MainWindow::filterItems()
 {
     // 数据准备
@@ -186,8 +215,6 @@ void MainWindow::runItem(QListWidgetItem *item)
     FunctionLib::steamRunGame(item->data(itemDataGameAppID).toString());
 }
 
-
-
 void MainWindow::clearList()
 {
     for (int i = ui->lst_Items->count() - 1; i >= 0; --i)
@@ -216,18 +243,35 @@ void MainWindow::on_lst_Items_currentItemChanged(QListWidgetItem *current, QList
     // ui->btn_->setEnabled(isEnabled);
 }
 
-void MainWindow::on_btn_AddLuaFile_clicked()
+void MainWindow::on_btn_Edit_clicked()
 {
-    AddLuaFileDialog addDialog(this->LuaDir, this);
+    editItem(ui->lst_Items->currentItem());
+}
 
-    connect(&addDialog, &AddLuaFileDialog::addingFinished, this,
-            [this](const QString &filePath, const QString &gameName, const QString &appID)
-            {
-                this->addItem(filePath, gameName, appID);
-                this->refresh();
-            });
+void MainWindow::on_btn_DeleteSelectedItem_clicked()
+{
+    QListWidgetItem *item = ui->lst_Items->currentItem();
+    if (!item)
+    {
+        QMessageBox::warning(this, "失败", "未选中任何项");
+        return;
+    }
 
-    addDialog.exec();
+    QFile file(item->data(itemDataFilePath).toString());
+    if (!file.exists()) return;
+
+    if (QMessageBox::question(this, "删除选中项", "确定删除？") == QMessageBox::No) return;
+
+    bool isSucceeded = file.remove();
+
+    if (isSucceeded)
+    {
+        this->refresh();
+    }
+    else
+    {
+        QMessageBox::critical(this, "删除失败", "错误信息：" + file.errorString());
+    }
 }
 
 void MainWindow::on_btn_ToggleLuaEnabled_clicked()
@@ -268,18 +312,21 @@ void MainWindow::on_btn_ToggleLuaEnabled_clicked()
     lbl_Appid->setStyleSheet(newSuffix == enabledSuffix ? "" : disabledItemStyleSheet);
 }
 
-void MainWindow::on_btn_About_clicked()
+void MainWindow::on_btn_AddLuaFile_clicked()
 {
-    AboutDialog aboutDialog(this);
-    aboutDialog.exec();
+    AddLuaFileDialog addDialog(this->LuaDir, this);
+
+    connect(&addDialog, &AddLuaFileDialog::addingFinished, this,
+            [this](const QString &filePath, const QString &gameName, const QString &appID)
+            {
+                this->addItem(filePath, gameName, appID);
+                this->refresh();
+            });
+
+    addDialog.exec();
 }
 
-void MainWindow::on_btn_Edit_clicked()
-{
-    editItem(ui->lst_Items->currentItem());
-}
-
-void MainWindow::on_btn_DeleteSelectedItem_clicked()
+void MainWindow::on_btn_OpenFile_clicked()
 {
     QListWidgetItem *item = ui->lst_Items->currentItem();
     if (!item)
@@ -288,41 +335,40 @@ void MainWindow::on_btn_DeleteSelectedItem_clicked()
         return;
     }
 
-    QFile file(item->data(itemDataFilePath).toString());
-    if (!file.exists()) return;
 
-    if (QMessageBox::question(this, "删除选中项", "确定删除？") == QMessageBox::No) return;
+    QDesktopServices::openUrl(QUrl::fromLocalFile(item->data(itemDataFilePath).toString()));
+}
 
-    bool isSucceeded = file.remove();
+void MainWindow::on_btn_OpenPath_clicked()
+{
+    QListWidgetItem *item = ui->lst_Items->currentItem();
 
-    if (isSucceeded)
+    if (!item)
     {
-        this->refresh();
+        FunctionLib::explorerOpenPath(this->LuaDir);
     }
     else
     {
-        QMessageBox::critical(this, "删除失败", "错误信息：" + file.errorString());
+        FunctionLib::explorerSelectPath(item->data(itemDataFilePath).toString());
     }
 }
 
-void MainWindow::on_btn_CopyFileContent_clicked()
+void MainWindow::on_btn_FormatAll_clicked()
 {
-    QListWidgetItem *item = ui->lst_Items->currentItem();
-    if (!item)
+    bool shouldUpdateFileName = QMessageBox::question(this, "全部格式化", "是否要更新文件名？", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes;
+
+    int count = ui->lst_Items->count();
+
+    while (--count >= 0)
     {
-        QMessageBox::warning(this, "失败", "未选中任何项");
-        return;
+        QListWidgetItem *item = ui->lst_Items->item(count);
+
+        if (!item) continue;
+
+        FunctionLib::editLuaFile(item->data(itemDataFilePath).toString(), item->data(itemDataGameName).toString(), item->data(itemDataGameAppID).toString(), shouldUpdateFileName);
     }
 
-
-    QFile file(item->data(itemDataFilePath).toString());
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QMessageBox::warning(this, "失败", "读取失败");
-        return;
-    }
-
-    QApplication::clipboard()->setText(QString::fromUtf8(file.readAll()));
+    if (shouldUpdateFileName) this->refresh();
 }
 
 void MainWindow::on_btn_CopyAppID_clicked()
@@ -369,6 +415,26 @@ void MainWindow::on_btn_CopyInfo_clicked()
     );
 }
 
+void MainWindow::on_btn_CopyFileContent_clicked()
+{
+    QListWidgetItem *item = ui->lst_Items->currentItem();
+    if (!item)
+    {
+        QMessageBox::warning(this, "失败", "未选中任何项");
+        return;
+    }
+
+
+    QFile file(item->data(itemDataFilePath).toString());
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QMessageBox::warning(this, "失败", "读取失败");
+        return;
+    }
+
+    QApplication::clipboard()->setText(QString::fromUtf8(file.readAll()));
+}
+
 void MainWindow::on_btn_Run_clicked()
 {
     runItem(ui->lst_Items->currentItem());
@@ -386,67 +452,14 @@ void MainWindow::on_btn_OpenShop_clicked()
     FunctionLib::steamOpenShop(item->data(itemDataGameAppID).toString());
 }
 
-void MainWindow::on_btn_FormatAll_clicked()
+void MainWindow::on_btn_RestartSteam_clicked()
 {
-    bool shouldUpdateFileName = QMessageBox::question(this, "全部格式化", "是否要更新文件名？", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes;
-
-    int count = ui->lst_Items->count();
-
-    while (--count >= 0)
-    {
-        QListWidgetItem *item = ui->lst_Items->item(count);
-
-        if (!item) continue;
-
-        FunctionLib::editLuaFile(item->data(itemDataFilePath).toString(), item->data(itemDataGameName).toString(), item->data(itemDataGameAppID).toString(), shouldUpdateFileName);
-    }
-
-    if (shouldUpdateFileName) this->refresh();
-}
-
-void MainWindow::on_btn_OpenFile_clicked()
-{
-    QListWidgetItem *item = ui->lst_Items->currentItem();
-    if (!item)
-    {
-        QMessageBox::warning(this, "失败", "未选中任何项");
-        return;
-    }
-
-
-    QDesktopServices::openUrl(QUrl::fromLocalFile(item->data(itemDataFilePath).toString()));
-}
-
-void MainWindow::on_btn_OpenPath_clicked()
-{
-    QListWidgetItem *item = ui->lst_Items->currentItem();
-
-    if (!item)
-    {
-        FunctionLib::explorerOpenPath(this->LuaDir);
-    }
-    else
-    {
-        FunctionLib::explorerSelectPath(item->data(itemDataFilePath).toString());
-    }
-}
-
-void MainWindow::on_btn_Search_clicked()
-{
-    QListWidgetItem *item = ui->lst_Items->currentItem();
-
-    SearchDialog searchDialog(item ? item->data(itemDataGameName).toString() : "", this);
-    searchDialog.exec();
+    FunctionLib::restartSteam(this->steamExe);
 }
 
 void MainWindow::on_btn_CloseSteam_clicked()
 {
     FunctionLib::closeSteamDetached();
-}
-
-void MainWindow::on_btn_RestartSteam_clicked()
-{
-    FunctionLib::restartSteam(this->steamExe);
 }
 
 void MainWindow::on_btn_Website_clicked()
@@ -456,6 +469,21 @@ void MainWindow::on_btn_Website_clicked()
 }
 
 
+
+void MainWindow::on_btn_Search_clicked()
+{
+    QListWidgetItem *item = ui->lst_Items->currentItem();
+
+    SearchDialog searchDialog(item ? item->data(itemDataGameName).toString() : "", this);
+    searchDialog.exec();
+}
+
+
+void MainWindow::on_btn_About_clicked()
+{
+    AboutDialog aboutDialog(this);
+    aboutDialog.exec();
+}
 
 void MainWindow::addItem(const QString &path, const QString &name, const QString &appID, bool select, bool sort)
 {

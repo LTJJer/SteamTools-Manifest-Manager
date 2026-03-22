@@ -29,18 +29,12 @@ AddLuaFileDialog::~AddLuaFileDialog()
 
 void AddLuaFileDialog::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (!checkDragAcceptability(event->mimeData()))
-    {
-        event->ignore();
-        return;
-    }
-
-    event->acceptProposedAction();
+    if (!FunctionLib::getMimeDataPaths(event->mimeData()).isEmpty()) event->acceptProposedAction();
 }
 
 void AddLuaFileDialog::dropEvent(QDropEvent *event)
 {
-    const QString path = this->getFilePath(event->mimeData());
+    const QString path = FunctionLib::getMimeDataPaths(event->mimeData()).constFirst();
 
     if (path.isEmpty() || !QFile::exists(path))
     {
@@ -51,24 +45,6 @@ void AddLuaFileDialog::dropEvent(QDropEvent *event)
     this->import(path);
 
     event->acceptProposedAction();
-}
-
-QString AddLuaFileDialog::getFilePath(const QMimeData *mime) const
-{
-    if (!mime->hasUrls()) return "";
-
-    const QUrl url = mime->urls().constFirst();
-    if (!url.isLocalFile()) return "";
-
-    const QString path = url.toLocalFile();
-    if (!QFile::exists(path)) return "";
-
-    return path;
-}
-
-bool AddLuaFileDialog::checkDragAcceptability(const QMimeData *mime) const
-{
-    return !this->getFilePath(mime).isEmpty();
 }
 
 void AddLuaFileDialog::import(const QString &path)
@@ -115,7 +91,7 @@ void AddLuaFileDialog::on_importButton_clicked()
         "选择导入的文件",
         QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
         "Lua 文件 (*.lua);;文本文件 (*.txt);;Lua 和文本文件 (*.lua *.txt);;所有文件 (*.*)"
-    ));
+        ));
 }
 
 void AddLuaFileDialog::on_CancelButton_clicked()
@@ -138,7 +114,7 @@ void AddLuaFileDialog::on_OKButton_clicked()
 
 
     QString gameName     = (aName && info.hasName) ? info.name : ui->le_Name->text();
-    QString appid        = (aName && info.hasAppID) ? info.appID : ui->le_Appid->text();
+    QString appid        = (aAppid && info.hasAppID) ? info.appID : ui->le_Appid->text();
 
     QString fileBaseName = !aFile ? ui->le_FileName->text() : appid;
     QString filePath     = QDir(this->luaDir).filePath((fileBaseName.endsWith(QString(".%1").arg(enabledSuffix)) || fileBaseName.endsWith(QString(".%1").arg(disabledSuffix))) ? fileBaseName : (QString("%1.%2").arg(fileBaseName, enabledSuffix)));

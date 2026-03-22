@@ -2,6 +2,8 @@
 
 #include <QMainWindow>
 #include <QListWidget>
+#include <qevent.h>
+#include <QMimeData>
 
 
 
@@ -19,6 +21,11 @@ signals:
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    // QWidget interface
+protected:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 
 private slots:
     void refresh();
@@ -56,6 +63,8 @@ private slots:
 
 private:
     void addItem(const QString &path, const QString &name, const QString &appID, bool select = true, bool sort = true);
+
+    QStringList getDragPaths(QMimeData *mime);
 
 private:
     Ui::MainWindow *ui;
