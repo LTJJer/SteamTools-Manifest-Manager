@@ -89,7 +89,7 @@ void MainWindow::dropEvent(QDropEvent *event)
             {
                 QMessageBox msg(this);
                 msg.setWindowTitle("文件名已存在");
-                msg.setText("文件名已存在，是否覆盖？");
+                msg.setText(QString("文件名已存在：\n%1\n是否覆盖？").arg(newInfo.fileName()));
                 QCheckBox *chk = new QCheckBox("本次导入保持操作");
                 msg.setCheckBox(chk);
                 msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
