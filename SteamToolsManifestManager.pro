@@ -62,7 +62,7 @@ OTHER_FILES += \
 # 应用信息
 RC_ICONS = ./Resources/Icons/icon.ico
 
-VERSION = 1.6.1
+VERSION = 1.6.2
 MAKE_TARGET_COMPANY = "LT_JJ"
 QMAKE_TARGET_DESCRIPTION = "An application for manage SteamTools manifest (Lua) files."
 QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2025-2026 LT_JJ. Licensed under MIT."

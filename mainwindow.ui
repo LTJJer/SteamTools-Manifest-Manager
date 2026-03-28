@@ -206,21 +206,18 @@ QListView
 QListView::item:hover
 {
     background-color: #353535;  /* 悬浮背景，介于列表背景和选中背景之间 */
-    color: #E0E0E0;             /* 文字颜色不变 */
 }
 
 /* 列表项按下 */
 QListView::item:pressed
 {
     background-color: #282828;  /* 按下背景，同按钮按下背景 */
-    color: #C0C0C0;             /* 按下文字稍暗 */
 }
 
 /* 选中项悬浮（同时处于选中和悬浮状态） */
 QListView::item:selected:hover
 {
     background-color: #282828;  /* 比选中背景更深，突出反馈 */
-    color: #E0E0E0;             /* 文字保持主色 */
     border: 1px solid #404040;
 }
 
