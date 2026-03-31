@@ -7,20 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>250</width>
-    <height>480</height>
+    <height>454</height>
    </rect>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>250</width>
-    <height>480</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>250</width>
-    <height>480</height>
-   </size>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>网站</string>
@@ -63,6 +57,20 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="btn_Manifest_SteamManifestDownloader">
+        <property name="text">
+         <string>Steam 游戏清单下载器</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>清单不求人</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btn_Manifest_ManifestHub">
         <property name="text">
          <string>Manifest Hub</string>
@@ -96,22 +104,22 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="gbx_Forum">
+    <widget class="QGroupBox" name="gbx_Community">
      <property name="title">
-      <string>论坛</string>
+      <string>社区</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
-       <widget class="QPushButton" name="btn_Forum_SteamToolsOld">
+       <widget class="QPushButton" name="btn_Community_3ACommunity">
         <property name="text">
-         <string>SteamTools（旧）</string>
+         <string>3A 社区</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_Forum_SteamToolsNew">
+       <widget class="QPushButton" name="btn_Community_Caigamer">
         <property name="text">
-         <string>SteamTools（新）</string>
+         <string>菜玩社区</string>
         </property>
        </widget>
       </item>

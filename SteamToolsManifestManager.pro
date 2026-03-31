@@ -61,7 +61,7 @@ OTHER_FILES += \
 # 应用信息
 RC_ICONS = ./Resources/Icons/icon.ico
 
-VERSION = 1.6.2.2
+VERSION = 1.6.3.0
 MAKE_TARGET_COMPANY = "LT_JJ"
 QMAKE_TARGET_DESCRIPTION = "An application for managing SteamTools manifest (Lua) files."
 QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2025-2026 LT_JJ. Licensed under MIT."
@@ -94,18 +94,16 @@ win32
 
 
 
-    # 1: $${WINDEPLOYQT}
-    # 2: $${BUILD_EXE}
-    # 3: $${DEPLOY_EXE}
-    # 4: $${BUILD_LICENSE}
-    # 5: $${BUILD_README}
+    # Args: ^<BUILD_EXE^> ^<DEPLOY_EXE^> ^<BUILD_README^> ^<BUILD_LICENSE^> ^<WINDEPLOYQT^> ^<DEPLOY_ARGS^> [DO_ARCHIVE]
 
     deploy.commands = E:/Qt/Tools/deploy.bat             \
-                    \"$$system_path($${WINDEPLOYQT})\"   \
                     \"$$system_path($${BUILD_EXE})\"     \
                     \"$$system_path($${DEPLOY_EXE})\"    \
-                    \"$$system_path($${BUILD_LICENSE})\" \
                     \"$$system_path($${BUILD_README})\"  \
-    
+                    \"$$system_path($${BUILD_LICENSE})\" \
+                    \"$$system_path($${WINDEPLOYQT})\"   \
+                    \"--no-translations --no-system-d3d-compiler --no-opengl-sw -no-svg -no-network --skip-plugin-types imageformats\" \
+                    \"1\"
+
     QMAKE_EXTRA_TARGETS += deploy
 }

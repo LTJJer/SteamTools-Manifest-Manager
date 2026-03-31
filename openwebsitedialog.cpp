@@ -49,12 +49,23 @@ void OpenWebsiteDialog::on_btn_Data_SteamUI_clicked()
     QDesktopServices::openUrl(QUrl("https://steamui.com"));
 }
 
-void OpenWebsiteDialog::on_btn_Forum_SteamToolsOld_clicked()
+void OpenWebsiteDialog::on_btn_Community_3ACommunity_clicked()
 {
-    QDesktopServices::openUrl(QUrl("https://bbs.steamtools.net/"));
+    QDesktopServices::openUrl(QUrl("https://3a.lol"));
 }
 
-void OpenWebsiteDialog::on_btn_Forum_SteamToolsNew_clicked()
+void OpenWebsiteDialog::on_btn_Manifest_SteamManifestDownloader_clicked()
 {
-    QDesktopServices::openUrl(QUrl("https://3a.lol/"));
+    QDesktopServices::openUrl(QUrl("https://manifest.youngzm.com"));
 }
+
+void OpenWebsiteDialog::on_pushButton_clicked()
+{
+    QDesktopServices::openUrl(QUrl("https://manifest.steam.run"));
+}
+
+void OpenWebsiteDialog::on_btn_Community_Caigamer_clicked()
+{
+    QDesktopServices::openUrl(QUrl("https://caigamer.cn"));
+}
+
