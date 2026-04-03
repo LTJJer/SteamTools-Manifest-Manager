@@ -126,40 +126,26 @@ QStringList splitStringLines(const QString &content)
     return content.split(lineSplitRegex);
 }
 
-LuaInfo findLuaInfo(const QStringList &content, const QString &defaultName, const QString &defaultAppID)
-{
-    static const QStringView gameNamePrefix    = u"-- 游戏名称:";
-    static const QStringView gameAppIDPrefix   = u"-- AppID:";
-    static const size_t gameNamePrefixLen  = gameNamePrefix.size();
-    static const size_t gameAppIDPrefixLen = gameAppIDPrefix.size();
-
-    LuaInfo info { false, false, defaultName, defaultAppID};
-
-    for (auto it = content.constBegin(), end = content.constEnd(); (!info.hasName || !info.hasAppID) && it != end; ++it)
-    {
-        QString line = it->trimmed();
-
-        if (line.isEmpty()) continue;
-
-        if (!info.hasName && line.startsWith(gameNamePrefix))
-        {
-            info.name = line.mid(gameNamePrefixLen).trimmed();
-            info.hasName = !info.name.isEmpty();
-        }
-        else if (!info.hasAppID && line.startsWith(gameAppIDPrefix))
-        {
-            info.appID = line.mid(gameAppIDPrefixLen).trimmed();
-            info.hasAppID = !info.appID.isEmpty();
-        }
-    }
-
-    return info;
-}
-
 LuaInfo findLuaInfo(const QString &content, const QString &defaultName, const QString &defaultAppID)
 {
-    return findLuaInfo(splitStringLines(content), defaultName, defaultAppID);
+    static const QRegularExpression namePattern(R"pattern(--\s*游戏名称\s*:\s*(?<content>.+)$)pattern", QRegularExpression::MultilineOption);
+    static const QRegularExpression appidPattern(R"pattern(--\s*AppID\s*:\s*(?<content>.+)$)pattern", QRegularExpression::MultilineOption);
+
+    const QRegularExpressionMatch nameMatch(namePattern.match(content));
+    const QRegularExpressionMatch appidMatch(appidPattern.match(content));
+
+    bool hasNameMatch = nameMatch.hasMatch();
+    bool hasAppidMatch = appidMatch.hasMatch();
+
+    return { hasNameMatch, hasAppidMatch, (hasNameMatch ? nameMatch.captured("content").trimmed() : defaultName), (hasAppidMatch ? appidMatch.captured("content").trimmed() : defaultAppID) };
 }
+
+LuaInfo findLuaInfo(const QStringList &content, const QString &defaultName, const QString &defaultAppID)
+{
+    return findLuaInfo(content.join('\n'), defaultName, defaultAppID);
+}
+
+
 
 QString formattedLua(const QString &content, const QString &name, const QString &appid)
 {

@@ -98,8 +98,8 @@ void explorerSelectPath(const QString &path);
 
 QStringList splitStringLines(const QString &content);
 
-LuaInfo findLuaInfo(const QStringList &content, const QString &defaultName = "", const QString &defaultAppID = "");
 LuaInfo findLuaInfo(const QString &content, const QString &defaultName = "", const QString &defaultAppID = "");
+LuaInfo findLuaInfo(const QStringList &content, const QString &defaultName = "", const QString &defaultAppID = "");
 
 QString formattedLua(const QString &content, const QString &name, const QString &appid);
 void formatLua(QStringList &content, const QString &name, const QString &appid);
