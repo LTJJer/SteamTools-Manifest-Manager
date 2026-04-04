@@ -632,7 +632,7 @@ QSpinBox:disabled, QDoubleSpinBox:disabled, QDateTimeEdit:disabled
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QRadioButton" name="rdo_AppID">
+         <widget class="QRadioButton" name="rdo_Appid">
           <property name="text">
            <string>AppID</string>
           </property>
@@ -792,7 +792,7 @@ QListWidget QWidget
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QPushButton" name="btn_CopyAppID">
+       <widget class="QPushButton" name="btn_CopyAppid">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -1075,7 +1075,7 @@ Lua 文件</string>
  </widget>
  <tabstops>
   <tabstop>le_Filter</tabstop>
-  <tabstop>rdo_AppID</tabstop>
+  <tabstop>rdo_Appid</tabstop>
   <tabstop>rdo_GameName</tabstop>
   <tabstop>chk_CaseSensitive</tabstop>
   <tabstop>chk_UseRegularExpression</tabstop>
@@ -1087,7 +1087,7 @@ Lua 文件</string>
   <tabstop>btn_OpenPath</tabstop>
   <tabstop>btn_Refresh</tabstop>
   <tabstop>btn_FormatAll</tabstop>
-  <tabstop>btn_CopyAppID</tabstop>
+  <tabstop>btn_CopyAppid</tabstop>
   <tabstop>btn_CopyGameName</tabstop>
   <tabstop>btn_CopyInfo</tabstop>
   <tabstop>btn_CopyFileContent</tabstop>
@@ -1168,7 +1168,7 @@ Lua 文件</string>
    </hints>
   </connection>
   <connection>
-   <sender>rdo_AppID</sender>
+   <sender>rdo_Appid</sender>
    <signal>toggled(bool)</signal>
    <receiver>MainWindow</receiver>
    <slot>filterItems()</slot>

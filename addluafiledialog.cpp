@@ -86,7 +86,7 @@ void AddLuaFileDialog::import(const QString &path, bool append)
     const FunctionLib::LuaInfo info = FunctionLib::findLuaInfo(content, "", fileBaseName);
 
     ui->le_Name->setText(info.name);
-    ui->le_Appid->setText(info.appID);
+    ui->le_Appid->setText(info.appid);
 
     ui->chk_AutoName->setChecked(false);
     ui->chk_AutoAppid->setChecked(false);
@@ -125,7 +125,7 @@ void AddLuaFileDialog::on_OKButton_clicked()
 
 
     QString gameName     = (aName && info.hasName) ? info.name : ui->le_Name->text();
-    QString appid        = (aAppid && info.hasAppID) ? info.appID : ui->le_Appid->text();
+    QString appid        = (aAppid && info.hasAppid) ? info.appid : ui->le_Appid->text();
 
     // 文件名可能为空的情况无需在意
     QString fileBaseName = !aFile ? ui->le_FileName->text() : appid;

@@ -138,8 +138,8 @@ void MainWindow::refresh()
 {
     QListWidgetItem *lastSelectedItem = ui->lst_Items->currentItem();
     bool hasLastSelectedItem = lastSelectedItem;
-    QString lastSelectedAppID;
-    if (hasLastSelectedItem) lastSelectedAppID = lastSelectedItem->data(Constant::appidRole).toString();
+    QString lastSelectedAppid;
+    if (hasLastSelectedItem) lastSelectedAppid = lastSelectedItem->data(Constant::appidRole).toString();
 
     ui->lst_Items->clear(); // QListWidget::clear() 会自动析构所有的 item 和 widget
 
@@ -158,7 +158,7 @@ void MainWindow::refresh()
         FunctionLib::LuaInfo luaInfo = FunctionLib::findLuaInfo(QTextStream(&file).readAll(), "", QFileInfo(filePath).completeBaseName());
         file.close();
 
-        this->addItem(filePath, luaInfo.name, luaInfo.appID, hasLastSelectedItem && (luaInfo.appID == lastSelectedAppID), false);
+        this->addItem(filePath, luaInfo.name, luaInfo.appid, hasLastSelectedItem && (luaInfo.appid == lastSelectedAppid), false);
     }
 
     ui->lst_Items->sortItems();
@@ -216,7 +216,7 @@ void MainWindow::filterItems()
     // 数据准备
     const QString content = ui->le_Filter->text();
 
-    bool isSearchAppID = ui->rdo_AppID->isChecked();
+    bool isSearchAppid = ui->rdo_Appid->isChecked();
     bool isCaseSensitive = ui->chk_CaseSensitive->isChecked();
     bool isUseRegex = ui->chk_UseRegularExpression->isChecked();
     bool doesContentValid = true;
@@ -248,7 +248,7 @@ void MainWindow::filterItems()
 
         if (!content.isEmpty() && doesContentValid)
         {
-            const QString target = (isSearchAppID ? item->data(Constant::appidRole) : item->data(Constant::gameNameRole)).toString();
+            const QString target = (isSearchAppid ? item->data(Constant::appidRole) : item->data(Constant::gameNameRole)).toString();
 
             if (isUseRegex)
             {
@@ -289,7 +289,7 @@ void MainWindow::on_lst_Items_currentItemChanged(QListWidgetItem *current, QList
     ui->btn_OpenShop->setEnabled(isEnabled);
     ui->btn_ToggleLuaEnabled->setEnabled(isEnabled);
     ui->btn_OpenFile->setEnabled(isEnabled);
-    ui->btn_CopyAppID->setEnabled(isEnabled);
+    ui->btn_CopyAppid->setEnabled(isEnabled);
     ui->btn_CopyGameName->setEnabled(isEnabled);
     ui->btn_CopyInfo->setEnabled(isEnabled);
     ui->btn_CopyFileContent->setEnabled(isEnabled);
@@ -370,9 +370,9 @@ void MainWindow::on_btn_AddLuaFile_clicked()
     AddLuaFileDialog addDialog(this->LuaDir, this);
 
     connect(&addDialog, &AddLuaFileDialog::addingFinished, this,
-            [this](const QString &filePath, const QString &gameName, const QString &appID)
+            [this](const QString &filePath, const QString &gameName, const QString &appid)
             {
-                this->addItem(filePath, gameName, appID);
+                this->addItem(filePath, gameName, appid);
             });
 
     addDialog.exec();
@@ -429,7 +429,7 @@ void MainWindow::on_btn_FormatAll_clicked()
     if (!errorList.isEmpty()) QMessageBox::warning(this, "格式化期间发生错误", "格式化期间发生错误，以下是文件名和错误信息：\n\n" + errorList.join('\n'));
 }
 
-void MainWindow::on_btn_CopyAppID_clicked()
+void MainWindow::on_btn_CopyAppid_clicked()
 {
     QListWidgetItem *item = ui->lst_Items->currentItem();
     if (!item)
@@ -543,21 +543,21 @@ void MainWindow::on_btn_About_clicked()
     aboutDialog.exec();
 }
 
-void MainWindow::addItem(const QString &path, const QString &name, const QString &appID, bool select, bool sort)
+void MainWindow::addItem(const QString &path, const QString &name, const QString &appid, bool select, bool sort)
 {
     QListWidgetItem *item = new QListWidgetItem(name, ui->lst_Items);
     item->setSizeHint(QSize(0, 30));
 
     item->setData(Constant::filePathRole,  path);
     item->setData(Constant::gameNameRole,  name);
-    item->setData(Constant::appidRole, appID);
+    item->setData(Constant::appidRole, appid);
 
     QWidget *widget = new QWidget(ui->lst_Items);
 
     QHBoxLayout *hLayout = new QHBoxLayout(widget);
     hLayout->setContentsMargins(9, 9, 9, 9);
 
-    QLabel *lbl_Appid = new QLabel(appID, widget);
+    QLabel *lbl_Appid = new QLabel(appid, widget);
     lbl_Appid->setObjectName("lbl_Appid");
     hLayout->addWidget(lbl_Appid, 1);
     if (QFileInfo(path).suffix() == Constant::luaDisabledSuffix)

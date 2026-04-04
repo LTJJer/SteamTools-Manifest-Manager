@@ -31,12 +31,12 @@ QString LuaInfo::toString(const QString &name, const QString &appid)
 // 格式为 游戏名、appid、空行 各一行
 QStringList LuaInfo::toList()
 {
-    return LuaInfo::toList(this->name, this->appID);
+    return LuaInfo::toList(this->name, this->appid);
 }
 // 格式为 游戏名、appid、空行 各一行
 QString LuaInfo::toString()
 {
-    return LuaInfo::toString(this->name, this->appID);
+    return LuaInfo::toString(this->name, this->appid);
 }
 
 
@@ -119,6 +119,7 @@ void explorerSelectPath(const QString &path)
 
 
 
+
 QStringList splitStringLines(const QString &content)
 {
     static const QRegularExpression lineSplitRegex(R"(\R)", QRegularExpression::DontCaptureOption);
@@ -126,23 +127,48 @@ QStringList splitStringLines(const QString &content)
     return content.split(lineSplitRegex);
 }
 
-LuaInfo findLuaInfo(const QString &content, const QString &defaultName, const QString &defaultAppID)
+
+
+
+LuaInfo findLuaInfo(const QString &content, const QString &defaultName, const QString &defaultAppid)
 {
-    static const QRegularExpression namePattern(R"pattern(--\s*游戏名称\s*:\s*(?<content>.+)$)pattern", QRegularExpression::MultilineOption);
-    static const QRegularExpression appidPattern(R"pattern(--\s*AppID\s*:\s*(?<content>.+)$)pattern", QRegularExpression::MultilineOption);
+    LuaInfo result;
 
-    const QRegularExpressionMatch nameMatch(namePattern.match(content));
-    const QRegularExpressionMatch appidMatch(appidPattern.match(content));
 
-    bool hasNameMatch = nameMatch.hasMatch();
-    bool hasAppidMatch = appidMatch.hasMatch();
+    // mode detection
+    static const QRegularExpression morrenusPattern(R"pattern(^-- (?<appid>\d+)'s Lua and Manifest Created by Morrenus\R-- (?<name>.*))pattern");
+    const QRegularExpressionMatch morrenusMatch(morrenusPattern.match(content));
 
-    return { hasNameMatch, hasAppidMatch, (hasNameMatch ? nameMatch.captured("content").trimmed() : defaultName), (hasAppidMatch ? appidMatch.captured("content").trimmed() : defaultAppID) };
+    if (morrenusMatch.hasMatch()) // Morrenus detection
+    {
+        result.name  = morrenusMatch.captured("name").trimmed();
+        result.appid = morrenusMatch.captured("appid").trimmed();
+    }
+    else // default detection
+    {
+        static const QRegularExpression namePattern(R"pattern(--\s*游戏名称\s*:\s*(?<content>.+))pattern");
+        static const QRegularExpression appidPattern(R"pattern(--\s*AppID\s*:\s*(?<content>.+))pattern");
+
+        const QRegularExpressionMatch nameMatch(namePattern.match(content));
+        const QRegularExpressionMatch appidMatch(appidPattern.match(content));
+
+        if (nameMatch.hasMatch()) result.name = nameMatch.captured("content").trimmed();
+        if (appidMatch.hasMatch()) result.appid = appidMatch.captured("content").trimmed();
+    }
+
+
+    // result
+    result.hasName  = !result.name.isEmpty();
+    result.hasAppid = !result.appid.isEmpty();
+    if (!result.hasName) result.name = defaultName;
+    if (!result.hasAppid) result.appid = defaultAppid;
+
+    return result;
 }
 
-LuaInfo findLuaInfo(const QStringList &content, const QString &defaultName, const QString &defaultAppID)
+LuaInfo findLuaInfo(const QStringList &content, const QString &defaultName, const QString &defaultAppid)
 {
-    return findLuaInfo(content.join('\n'), defaultName, defaultAppID);
+    return findLuaInfo(content.join('\n'), defaultName, defaultAppid);
 }
 
 
@@ -215,17 +241,17 @@ FileEditErrorType renameFile(const QString &filePath, const QString &newName)
     return renameFile(&file, newName);
 }
 
-FileEditErrorType editLuaFile(const QString &filePath, const QString &gameName, const QString &gameAppID, bool shouldRename)
+FileEditErrorType editLuaFile(const QString &filePath, const QString &gameName, const QString &gameAppid, bool shouldRename)
 {
     FileEditErrorType errorType = NoError;
 
     QFile file(filePath);
 
-    if (shouldRename) errorType |= renameFile(&file, gameAppID + "." + QFileInfo(filePath).suffix());
+    if (shouldRename) errorType |= renameFile(&file, gameAppid + "." + QFileInfo(filePath).suffix());
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) return errorType | OpenFileFailed;
 
-    QString content = formattedLua(QTextStream(&file).readAll(), gameName, gameAppID);
+    QString content = formattedLua(QTextStream(&file).readAll(), gameName, gameAppid);
     file.close();
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) return errorType | OpenFileFailed;

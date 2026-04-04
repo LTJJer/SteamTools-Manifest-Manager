@@ -15,7 +15,7 @@ class AddLuaFileDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void addingFinished(const QString &filePath, const QString &gameName, const QString &appID, const QStringList &content);
+    void addingFinished(const QString &filePath, const QString &gameName, const QString &appid, const QStringList &content);
 
 public:
     explicit AddLuaFileDialog(const QString &luaDir, QWidget *parent = nullptr);

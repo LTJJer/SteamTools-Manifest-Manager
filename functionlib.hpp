@@ -32,10 +32,10 @@ namespace FunctionLib
 struct LuaInfo
 {
     bool hasName = false;
-    bool hasAppID = false;
+    bool hasAppid = false;
 
     QString name = "";
-    QString appID = "";
+    QString appid = "";
 
 
     static QStringList toList(const QString &name, const QString &appid);
@@ -98,8 +98,8 @@ void explorerSelectPath(const QString &path);
 
 QStringList splitStringLines(const QString &content);
 
-LuaInfo findLuaInfo(const QString &content, const QString &defaultName = "", const QString &defaultAppID = "");
-LuaInfo findLuaInfo(const QStringList &content, const QString &defaultName = "", const QString &defaultAppID = "");
+LuaInfo findLuaInfo(const QString &content, const QString &defaultName = "", const QString &defaultAppid = "");
+LuaInfo findLuaInfo(const QStringList &content, const QString &defaultName = "", const QString &defaultAppid = "");
 
 QString formattedLua(const QString &content, const QString &name, const QString &appid);
 void formatLua(QStringList &content, const QString &name, const QString &appid);
@@ -109,7 +109,7 @@ void formatLua(QStringList &content, const QString &name, const QString &appid);
 FileEditErrorType renameFile(QFile *file, const QString &newName);
 FileEditErrorType renameFile(const QString &filePath, const QString &newName);
 
-FileEditErrorType editLuaFile(const QString &filePath, const QString &gameName, const QString &gameAppID, bool shouldRename = true);
+FileEditErrorType editLuaFile(const QString &filePath, const QString &gameName, const QString &gameAppid, bool shouldRename = true);
 
 
 

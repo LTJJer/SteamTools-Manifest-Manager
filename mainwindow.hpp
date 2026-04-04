@@ -44,7 +44,7 @@ private slots:
     void on_btn_OpenFile_clicked();
     void on_btn_OpenPath_clicked();
     void on_btn_FormatAll_clicked();
-    void on_btn_CopyAppID_clicked();
+    void on_btn_CopyAppid_clicked();
     void on_btn_CopyGameName_clicked();
     void on_btn_CopyInfo_clicked();
     void on_btn_CopyFileContent_clicked();
@@ -57,7 +57,7 @@ private slots:
     void on_btn_About_clicked();
 
 private:
-    void addItem(const QString &path, const QString &name, const QString &appID, bool select = true, bool sort = true);
+    void addItem(const QString &path, const QString &name, const QString &appid, bool select = true, bool sort = true);
 
 private:
     Ui::MainWindow *ui;
