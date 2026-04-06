@@ -57,11 +57,11 @@ private slots:
     void on_btn_About_clicked();
 
 private:
-    void addItem(const QString &path, const QString &name, const QString &appid, bool select = true, bool sort = true);
+    void addItem(const QString &path, const QString &name, const QString &appid, bool select = true, bool sort = true, bool filter = true);
 
 private:
     Ui::MainWindow *ui;
 
-    QString LuaDir;
-    QString steamExe;
+    const QString mv_LuaDir;
+    const QString mv_steamExe;
 };

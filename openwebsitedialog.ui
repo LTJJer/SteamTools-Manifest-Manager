@@ -31,6 +31,9 @@
         <property name="text">
          <string>SteamTools</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">btng_Buttons</string>
+        </attribute>
        </widget>
       </item>
      </layout>
@@ -47,6 +50,9 @@
         <property name="text">
          <string>Assiw</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">btng_Buttons</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -54,6 +60,9 @@
         <property name="text">
          <string>Steam Manifest Hub</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">btng_Buttons</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -61,6 +70,9 @@
         <property name="text">
          <string>Steam 游戏清单下载器</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">btng_Buttons</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -68,6 +80,9 @@
         <property name="text">
          <string>清单不求人</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">btng_Buttons</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -75,6 +90,9 @@
         <property name="text">
          <string>Manifest Hub</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">btng_Buttons</string>
+        </attribute>
        </widget>
       </item>
      </layout>
@@ -91,6 +109,9 @@
         <property name="text">
          <string>SteamDB</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">btng_Buttons</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -98,6 +119,9 @@
         <property name="text">
          <string>SteamUI</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">btng_Buttons</string>
+        </attribute>
        </widget>
       </item>
      </layout>
@@ -114,6 +138,9 @@
         <property name="text">
          <string>3A 社区</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">btng_Buttons</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -121,6 +148,9 @@
         <property name="text">
          <string>菜玩社区</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">btng_Buttons</string>
+        </attribute>
        </widget>
       </item>
      </layout>
@@ -129,5 +159,25 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>btng_Buttons</sender>
+   <signal>idClicked(int)</signal>
+   <receiver>OpenWebsiteDialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>124</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <buttongroups>
+  <buttongroup name="btng_Buttons"/>
+ </buttongroups>
 </ui>

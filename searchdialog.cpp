@@ -35,10 +35,9 @@ void SearchDialog::on_btn_Cancel_clicked()
 
 void SearchDialog::on_btn_Search_clicked()
 {
-    SearchWay way = static_cast<SearchWay>(ui->btng_SearchWeb->checkedId());
     const QString content = ui->le_Content->text();
 
-    switch (way)
+    switch (ui->btng_SearchWeb->checkedId())
     {
     case SteamApp:
         FunctionLib::steamAppSearch(content);

@@ -44,16 +44,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="chk_AutoName">
-       <property name="text">
-        <string>智能检测</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QLineEdit" name="le_Name">
        <property name="sizeIncrement">
         <size>
@@ -63,6 +53,9 @@
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>若为空，则尝试从 Lua 内容中查找</string>
        </property>
        <property name="placeholderText">
         <string>游戏名</string>
@@ -87,22 +80,15 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="chk_AutoAppid">
-       <property name="text">
-        <string>智能检测</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QLineEdit" name="le_Appid">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>若为空，则尝试从 Lua 内容中查找</string>
        </property>
        <property name="placeholderText">
         <string>AppID</string>
@@ -113,13 +99,22 @@
    </item>
    <item>
     <widget class="QPlainTextEdit" name="txt_Content">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="acceptDrops">
       <bool>false</bool>
      </property>
+     <property name="toolTip">
+      <string>addappid(int AppID, int Flag, string Key)
+setManifestid(int DepotId, string ManifestID)
+addtoken(int AppID, string Token)
+setAppticket(int AppID, string Ticket)</string>
+     </property>
      <property name="plainText">
-      <string>addappid()
-addappid(, 0, &quot;&quot;)
-setManifestid(, &quot;&quot;)</string>
+      <string/>
      </property>
     </widget>
    </item>
@@ -139,19 +134,9 @@ setManifestid(, &quot;&quot;)</string>
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="chk_AutoFileName">
-       <property name="text">
-        <string>用 AppID</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QLineEdit" name="le_FileName">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -162,11 +147,14 @@ setManifestid(, &quot;&quot;)</string>
        <property name="acceptDrops">
         <bool>false</bool>
        </property>
+       <property name="toolTip">
+        <string>若为空，则使用 AppID</string>
+       </property>
        <property name="inputMask">
         <string/>
        </property>
        <property name="placeholderText">
-        <string>文件尾自动加 .lua</string>
+        <string>无需手动写后缀</string>
        </property>
       </widget>
      </item>
@@ -185,6 +173,9 @@ setManifestid(, &quot;&quot;)</string>
      </item>
      <item>
       <widget class="QCheckBox" name="chk_ShouldFormat">
+       <property name="toolTip">
+        <string>如果勾选：添加前额外对即将写入的内容进行一次格式化。</string>
+       </property>
        <property name="text">
         <string>格式化</string>
        </property>
@@ -212,22 +203,5 @@ setManifestid(, &quot;&quot;)</string>
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>chk_AutoFileName</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>le_FileName</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>137</x>
-     <y>578</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>144</x>
-     <y>578</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

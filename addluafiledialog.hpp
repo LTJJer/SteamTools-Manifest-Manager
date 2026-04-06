@@ -1,5 +1,8 @@
 #pragma once
 
+#include "functionlib.hpp"
+#include "lua.hpp"
+
 #include <QDialog>
 #include <qevent.h>
 #include <QMimeData>
@@ -15,7 +18,7 @@ class AddLuaFileDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void addingFinished(const QString &filePath, const QString &gameName, const QString &appid, const QStringList &content);
+    void addingFinished(FunctionLib::FileEditErrorType error, const Lua::LuaData &data);
 
 public:
     explicit AddLuaFileDialog(const QString &luaDir, QWidget *parent = nullptr);
@@ -32,7 +35,7 @@ private:
 private:
     Ui::AddLuaFileDialog *ui;
 
-    QString luaDir;
+    const QString mv_luaDir;
 
 private slots:
     void on_importButton_clicked();

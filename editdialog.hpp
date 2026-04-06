@@ -30,5 +30,5 @@ private slots:
 private:
     Ui::EditDialog *ui;
 
-    QString path, appid, name;
+    QString mv_path, mv_name, mv_appid;
 };

@@ -1,6 +1,8 @@
 #include "addluafiledialog.hpp"
 #include "ui_addluafiledialog.h"
 
+#include "lua.hpp"
+#include "constant.hpp"
 #include "functionlib.hpp"
 
 #include <QFileDialog>
@@ -9,19 +11,19 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QValidator>
+#include <QRegularExpressionValidator>
+#include <QTextStream>
 
 
 
 AddLuaFileDialog::AddLuaFileDialog(const QString &luaDir, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::AddLuaFileDialog)
+    , mv_luaDir(luaDir)
 {
     ui->setupUi(this);
 
-
-    ui->le_FileName->setValidator(&Constant::pathValidator);
-
-    this->luaDir = luaDir;
+    ui->le_FileName->setValidator(new QRegularExpressionValidator(Constant::pathRegex, this));
 }
 
 AddLuaFileDialog::~AddLuaFileDialog()
@@ -62,12 +64,6 @@ void AddLuaFileDialog::import(const QString &path, bool append)
 
 
 
-    // 文件
-    const QString fileBaseName = QFileInfo(path).completeBaseName();
-
-    ui->le_FileName->setText(fileBaseName);
-
-
     // 内容
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -77,20 +73,19 @@ void AddLuaFileDialog::import(const QString &path, bool append)
     }
 
     const QString content = QTextStream(&file).readAll();
+    file.close();
 
     if (append) ui->txt_Content->setPlainText(ui->txt_Content->toPlainText() + "\n\n" + content);
     else ui->txt_Content->setPlainText(content);
 
 
     // 标记
-    const FunctionLib::LuaInfo info = FunctionLib::findLuaInfo(content, "", fileBaseName);
+    const QFileInfo fileInfo = QFileInfo(path);
 
-    ui->le_Name->setText(info.name);
-    ui->le_Appid->setText(info.appid);
+    const Lua::LuaInfo info = Lua::findLuaInfo(content, fileInfo.dir().dirName(), fileInfo.baseName());
 
-    ui->chk_AutoName->setChecked(false);
-    ui->chk_AutoAppid->setChecked(false);
-    ui->chk_AutoFileName->setChecked(false);
+    ui->le_Name->setText(info.getName());
+    ui->le_Appid->setText(info.getAppid());
 }
 
 
@@ -110,58 +105,32 @@ void AddLuaFileDialog::on_CancelButton_clicked()
     this->close();
 }
 
+// 文件基础名允许为空
 void AddLuaFileDialog::on_OKButton_clicked()
 {
-    // 数据准备
-    QStringList          content { FunctionLib::splitStringLines(ui->txt_Content->toPlainText()) };
-    FunctionLib::LuaInfo info;
+    Lua::LuaData data;
 
-    bool aName  = ui->chk_AutoName->isChecked();
-    bool aAppid = ui->chk_AutoAppid->isChecked();
-    bool aFile  = ui->chk_AutoFileName->isChecked();
-
-    if (aName || aAppid || aFile) info = FunctionLib::findLuaInfo(content);
-
-
-
-    QString gameName     = (aName && info.hasName) ? info.name : ui->le_Name->text();
-    QString appid        = (aAppid && info.hasAppid) ? info.appid : ui->le_Appid->text();
-
-    // 文件名可能为空的情况无需在意
-    QString fileBaseName = !aFile ? ui->le_FileName->text() : appid;
-    QString filePath     = QDir(this->luaDir).filePath((fileBaseName.endsWith(QString(".%1").arg(Constant::luaEnabledSuffix)) || fileBaseName.endsWith(QString(".%1").arg(Constant::luaDisabledSuffix))) ? fileBaseName : (QString("%1.%2").arg(fileBaseName, Constant::luaEnabledSuffix)));
+    const FunctionLib::FileEditErrorType error = Lua::addLuaFile(
+        mv_luaDir, ui->txt_Content->toPlainText(),
+        ui->le_Name->text(), ui->le_Appid->text(), ui->le_FileName->text(),
+        ui->chk_ShouldFormat->isChecked(),
+        ui->le_Name->text().isEmpty(), ui->le_Appid->text().isEmpty(), ui->le_FileName->text().isEmpty(),
+        &data, [this](const QString &filePath) -> bool
+        {
+            return QMessageBox::question(this, "该文件名已存在", QString("该文件名已存在：\n%1\n\n是否覆盖？").arg(FunctionLib::toWindowsPath(filePath))) == QMessageBox::Yes;
+        });
 
 
 
-    // 格式化
-    if (ui->chk_ShouldFormat->isChecked())
+    if (error & FunctionLib::NewNameExisted) return;
+
+    if (error)
     {
-        FunctionLib::formatLua(content, gameName, appid);
-    }
-    else
-    {
-        content.prepend("");
-        content.prepend("-- AppID: " + appid);
-        content.prepend("-- 游戏名称: " + gameName);
-    }
-
-
-    // 写入
-    QFile file(filePath);
-
-    if (file.exists() && (QMessageBox::question(this, "该文件名已存在", "该文件名已存在\n是否覆盖？") == QMessageBox::No)) return;
-
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
-    {
-        QMessageBox::critical(this, "失败", "文件打开失败");
+        QMessageBox::critical(this, "添加时发生错误", FunctionLib::generateFileEditErrorString(error));
         return;
     }
 
-    QTextStream(&file) << content.join('\n');
-
-    file.close();
-
-    emit addingFinished(filePath, gameName, appid, content);
+    emit addingFinished(error, data);
 
     this->close();
 }

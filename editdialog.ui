@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>130</height>
+    <height>143</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <item row="1" column="1">
       <widget class="QLineEdit" name="AppIDEdit">
        <property name="placeholderText">
-        <string>为空则取文件名</string>
+        <string>留空则保持不变</string>
        </property>
       </widget>
      </item>
@@ -43,7 +43,7 @@
      <item row="0" column="1">
       <widget class="QLineEdit" name="GameNameEdit">
        <property name="placeholderText">
-        <string>为空则取默认名</string>
+        <string>留空则保持不变</string>
        </property>
       </widget>
      </item>
@@ -56,6 +56,13 @@
      </property>
      <property name="checked">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; color:#ff4444;&quot;&gt;注：此模式会自动执行格式化&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>

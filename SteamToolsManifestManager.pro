@@ -22,6 +22,8 @@ QT += widgets
 
 # 源文件
 HEADERS += \
+    constant.hpp \
+    lua.hpp \
     mainwindow.hpp \
     functionlib.hpp \
     editdialog.hpp \
@@ -31,6 +33,7 @@ HEADERS += \
     searchdialog.hpp
 
 SOURCES += \
+    lua.cpp \
     main.cpp \
     mainwindow.cpp \
     functionlib.cpp \
@@ -61,9 +64,9 @@ OTHER_FILES += \
 # 应用信息
 RC_ICONS = ./Resources/Icons/icon.ico
 
-VERSION = 1.6.3.0
+VERSION = 1.7.0.0
 MAKE_TARGET_COMPANY = "LT_JJ"
-QMAKE_TARGET_DESCRIPTION = "An application for managing SteamTools manifest (Lua) files."
+QMAKE_TARGET_DESCRIPTION = "SteamTools Manifest Manager"
 QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2025-2026 LT_JJ. Licensed under MIT."
 
 
