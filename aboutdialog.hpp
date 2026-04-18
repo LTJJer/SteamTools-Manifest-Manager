@@ -17,8 +17,10 @@ public:
     ~AboutDialog();
 
 private slots:
-    void on_btn_LT_JJGitHub_clicked();
-    void on_btn_LT_JJBilibili_clicked();
+    void on_btn_LT_JJ_GitHub_clicked();
+    void on_btn_LT_JJ_Bilibili_clicked();
+
+    void on_btn_Donate_LT_JJ_Ifdian_clicked();
 
 private:
     Ui::AboutDialog *ui;
