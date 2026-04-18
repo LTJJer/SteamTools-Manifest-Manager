@@ -137,7 +137,7 @@ void MainWindow::refresh()
 
     const QListWidgetItem *lastSelectedItem = ui->lst_Items->currentItem();
     const bool hasLastSelectedItem = lastSelectedItem;
-    if (hasLastSelectedItem) lastSelectedAppid = lastSelectedItem->data(Constant::appidRole).toString();
+    if (hasLastSelectedItem) lastSelectedAppid = lastSelectedItem->data(Constant::Role::appid).toString();
 
 
 
@@ -177,19 +177,19 @@ void MainWindow::editItem(QListWidgetItem *item)
         return;
     }
 
-    EditDialog editDialog(item->data(Constant::filePathRole).toString(), item->data(Constant::gameNameRole).toString(), item->data(Constant::appidRole).toString(), this);
+    EditDialog editDialog(item->data(Constant::Role::path).toString(), item->data(Constant::Role::name).toString(), item->data(Constant::Role::appid).toString(), this);
 
     connect(&editDialog, &EditDialog::editFinished, this,
             [this, item, widget = ui->lst_Items->itemWidget(item)](FunctionLib::FileEditErrorType error, const QString &path, const QString &name, const QString &appid)
             {
                 if (!(error & FunctionLib::RenameFailed))
                 {
-                    item->setData(Constant::filePathRole,  path);
+                    item->setData(Constant::Role::path,  path);
                 }
                 if (!(error & FunctionLib::OpenFileFailed))
                 {
-                    item->setData(Constant::gameNameRole,  name);
-                    item->setData(Constant::appidRole, appid);
+                    item->setData(Constant::Role::name,  name);
+                    item->setData(Constant::Role::appid, appid);
                     item->setText(name);
 
                     if (widget)
@@ -256,7 +256,7 @@ void MainWindow::filterItems()
 
         if (!content.isEmpty() && doesContentValid)
         {
-            const QString target = (isSearchAppid ? item->data(Constant::appidRole) : item->data(Constant::gameNameRole)).toString();
+            const QString target = (isSearchAppid ? item->data(Constant::Role::appid) : item->data(Constant::Role::name)).toString();
 
             if (isUseRegex) match = target.contains(contentPattern);
             else match = target.contains(content, (isCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive));
@@ -274,7 +274,7 @@ void MainWindow::runItem(QListWidgetItem *item)
         return;
     }
 
-    FunctionLib::steamRunGame(item->data(Constant::appidRole).toString());
+    FunctionLib::steamRunGame(item->data(Constant::Role::appid).toString());
 }
 
 
@@ -314,7 +314,7 @@ void MainWindow::on_btn_DeleteSelectedItem_clicked()
 
 
 
-    QFile file(item->data(Constant::filePathRole).toString());
+    QFile file(item->data(Constant::Role::path).toString());
     if (QMessageBox::question(this, "删除选中项", "确定删除？\n" + file.fileName()) == QMessageBox::No) return;
 
     file.remove();
@@ -340,7 +340,7 @@ void MainWindow::on_btn_ToggleLuaEnabled_clicked()
         return;
     }
 
-    QFileInfo fileInfo(item->data(Constant::filePathRole).toString());
+    QFileInfo fileInfo(item->data(Constant::Role::path).toString());
     const QString newSuffix = (fileInfo.suffix() == Constant::luaEnabledSuffix ? Constant::luaDisabledSuffix : Constant::luaEnabledSuffix);
     QFile file(fileInfo.filePath());
 
@@ -350,7 +350,7 @@ void MainWindow::on_btn_ToggleLuaEnabled_clicked()
         return;
     }
 
-    item->setData(Constant::filePathRole, file.fileName());
+    item->setData(Constant::Role::path, file.fileName());
 
     if (QWidget *widget = ui->lst_Items->itemWidget(item))
         if (QLabel *lbl_Appid = widget->findChild<QLabel*>("lbl_Appid"))
@@ -380,7 +380,7 @@ void MainWindow::on_btn_OpenFile_clicked()
     }
 
 
-    QDesktopServices::openUrl(QUrl::fromLocalFile(item->data(Constant::filePathRole).toString()));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(item->data(Constant::Role::path).toString()));
 }
 
 void MainWindow::on_btn_OpenPath_clicked()
@@ -393,7 +393,7 @@ void MainWindow::on_btn_OpenPath_clicked()
     }
     else
     {
-        FunctionLib::explorerSelectPath(item->data(Constant::filePathRole).toString());
+        FunctionLib::explorerSelectPath(item->data(Constant::Role::path).toString());
     }
 }
 
@@ -410,11 +410,11 @@ void MainWindow::on_btn_FormatAll_clicked()
         QListWidgetItem *item = ui->lst_Items->item(count);
         if (!item) continue;
 
-        QString path = item->data(Constant::filePathRole).toString();
-        FunctionLib::FileEditErrorType error = Lua::editLuaFile(&path, item->data(Constant::gameNameRole).toString(), item->data(Constant::appidRole).toString(), shouldUpdateFileName);
+        QString path = item->data(Constant::Role::path).toString();
+        FunctionLib::FileEditErrorType error = Lua::editLuaFile(&path, item->data(Constant::Role::name).toString(), item->data(Constant::Role::appid).toString(), shouldUpdateFileName);
 
-        if (shouldUpdateFileName && !(error & FunctionLib::RenameFailed)) item->setData(Constant::filePathRole, path);
-        if (error) errorList.append(QString("%1   |:|   %2").arg(QFileInfo(item->data(Constant::filePathRole).toString()).fileName(), FunctionLib::generateFileEditErrorString(error, "；")));
+        if (shouldUpdateFileName && !(error & FunctionLib::RenameFailed)) item->setData(Constant::Role::path, path);
+        if (error) errorList.append(QString("%1   |:|   %2").arg(QFileInfo(item->data(Constant::Role::path).toString()).fileName(), FunctionLib::generateFileEditErrorString(error, "；")));
     }
 
     if (!errorList.isEmpty()) QMessageBox::warning(this, "格式化期间发生错误", "格式化期间发生错误，以下是文件名和错误信息：\n\n" + errorList.join('\n'));
@@ -430,7 +430,7 @@ void MainWindow::on_btn_CopyAppid_clicked()
     }
 
 
-    QApplication::clipboard()->setText(ui->lst_Items->currentItem()->data(Constant::appidRole).toString());
+    QApplication::clipboard()->setText(item->data(Constant::Role::appid).toString());
 }
 
 void MainWindow::on_btn_CopyGameName_clicked()
@@ -443,7 +443,7 @@ void MainWindow::on_btn_CopyGameName_clicked()
     }
 
 
-    QApplication::clipboard()->setText(ui->lst_Items->currentItem()->data(Constant::gameNameRole).toString());
+    QApplication::clipboard()->setText(ui->lst_Items->currentItem()->data(Constant::Role::name).toString());
 }
 
 void MainWindow::on_btn_CopyInfo_clicked()
@@ -458,8 +458,8 @@ void MainWindow::on_btn_CopyInfo_clicked()
 
     QApplication::clipboard()->setText(
         Lua::LuaInfo::toString(
-            item->data(Constant::gameNameRole).toString(),
-            item->data(Constant::appidRole).toString()));
+            item->data(Constant::Role::name).toString(),
+            item->data(Constant::Role::appid).toString()));
 }
 
 void MainWindow::on_btn_CopyFileContent_clicked()
@@ -472,7 +472,7 @@ void MainWindow::on_btn_CopyFileContent_clicked()
     }
 
 
-    QFile file(item->data(Constant::filePathRole).toString());
+    QFile file(item->data(Constant::Role::path).toString());
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QMessageBox::warning(this, "失败", "读取失败");
@@ -496,7 +496,7 @@ void MainWindow::on_btn_OpenShop_clicked()
         return;
     }
 
-    FunctionLib::steamOpenShop(item->data(Constant::appidRole).toString());
+    FunctionLib::steamOpenShop(item->data(Constant::Role::appid).toString());
 }
 
 void MainWindow::on_btn_RestartSteam_clicked()
@@ -521,7 +521,7 @@ void MainWindow::on_btn_Search_clicked()
 {
     QListWidgetItem *item = ui->lst_Items->currentItem();
 
-    SearchDialog searchDialog(item ? item->data(Constant::gameNameRole).toString() : "", this);
+    SearchDialog searchDialog(item ? item->data(Constant::Role::name).toString() : "", this);
     searchDialog.exec();
 }
 
@@ -537,9 +537,9 @@ void MainWindow::addItem(const QString &path, const QString &name, const QString
     QListWidgetItem *item = new QListWidgetItem(name, ui->lst_Items);
     item->setSizeHint(QSize(0, 30));
 
-    item->setData(Constant::filePathRole,  path);
-    item->setData(Constant::gameNameRole,  name);
-    item->setData(Constant::appidRole, appid);
+    item->setData(Constant::Role::path,  path);
+    item->setData(Constant::Role::name,  name);
+    item->setData(Constant::Role::appid, appid);
 
     QWidget *widget = new QWidget(ui->lst_Items);
 
