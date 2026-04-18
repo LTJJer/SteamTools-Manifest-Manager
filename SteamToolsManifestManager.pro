@@ -97,7 +97,7 @@ win32
 
 
 
-    # Args: ^<BUILD_EXE^> ^<DEPLOY_EXE^> ^<BUILD_README^> ^<BUILD_LICENSE^> ^<WINDEPLOYQT^> ^<DEPLOY_ARGS^> [DO_ARCHIVE]
+    # Args: ^<BUILD_EXE^> ^<DEPLOY_EXE^> ^<BUILD_README^> ^<BUILD_LICENSE^> ^<WINDEPLOYQT^> ^<DEPLOY_ARGS^> ^<DO_ARCHIVE^>
 
     deploy.commands = E:/Qt/Tools/deploy.bat             \
                     \"$$system_path($${BUILD_EXE})\"     \
