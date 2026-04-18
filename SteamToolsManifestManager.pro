@@ -66,7 +66,7 @@ RC_ICONS = ./Resources/Icons/icon.ico
 
 VERSION = 1.7.1
 MAKE_TARGET_COMPANY = "LT_JJ"
-QMAKE_TARGET_DESCRIPTION = "SteamTools Manifest Manager"
+QMAKE_TARGET_DESCRIPTION = $${TARGET}
 QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2025-2026 LT_JJ. Licensed under MIT."
 
 
