@@ -19,7 +19,9 @@ CONFIG += c++23
 
 QT += widgets
 
-
+win32 {
+    LIBS += -ldwmapi
+}
 
 # 源文件
 HEADERS += \
@@ -31,7 +33,9 @@ HEADERS += \
     addluafiledialog.hpp \
     aboutdialog.hpp \
     openwebsitedialog.hpp \
-    searchdialog.hpp
+    searchdialog.hpp \
+    settings.h \
+    messagedialog.h
 
 SOURCES += \
     lua.cpp \
@@ -42,7 +46,9 @@ SOURCES += \
     addluafiledialog.cpp \
     aboutdialog.cpp \
     openwebsitedialog.cpp \
-    searchdialog.cpp
+    searchdialog.cpp \
+    settings.cpp \
+    messagedialog.cpp
 
 FORMS += \
     mainwindow.ui \
@@ -50,7 +56,8 @@ FORMS += \
     addluafiledialog.ui \
     aboutdialog.ui \
     openwebsitedialog.ui \
-    searchdialog.ui
+    searchdialog.ui \
+    settings.ui
 
 RESOURCES += \
     resources.qrc

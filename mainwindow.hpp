@@ -56,6 +56,8 @@ private slots:
     void on_btn_Search_clicked();
     void on_btn_About_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     void addItem(const QString &path, const QString &name, const QString &appid, bool select = true, bool sort = true, bool filter = true);
 

@@ -3,6 +3,10 @@
 
 #include "functionlib.hpp"
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
+
 
 
 SearchDialog::SearchDialog(const QString &defaultContent, QWidget *parent)
@@ -10,6 +14,18 @@ SearchDialog::SearchDialog(const QString &defaultContent, QWidget *parent)
     , ui(new Ui::SearchDialog)
 {
     ui->setupUi(this);
+
+    // 禁止最大化、禁止调整大小
+    setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::WindowCloseButtonHint | Qt::WindowSystemMenuHint | Qt::MSWindowsFixedSizeDialogHint);
+
+#ifdef Q_OS_WIN
+    HWND hwnd = (HWND)winId();
+    if (hwnd) {
+        LONG_PTR style = GetWindowLongPtrW(hwnd, GWL_STYLE);
+        style &= ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME);
+        SetWindowLongPtrW(hwnd, GWL_STYLE, style);
+    }
+#endif
 
     ui->btng_SearchWeb->setId(ui->rdo_SteamApp , SteamApp);
     ui->btng_SearchWeb->setId(ui->rdo_SteamWeb , SteamWeb);
