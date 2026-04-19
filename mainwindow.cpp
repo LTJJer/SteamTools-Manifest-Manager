@@ -8,7 +8,9 @@
 #include "searchdialog.hpp"
 #include "aboutdialog.hpp"
 #include "openwebsitedialog.hpp"
+#include "messagedialog.h"
 #include "lua.hpp"
+#include "settings.h"
 
 #include <QFile>
 #include <QFileInfo>
@@ -33,9 +35,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    Settings::applyTheme(Settings::currentTheme(), this);
+
     if (mv_steamExe.isEmpty() || !QFile::exists(mv_steamExe) || mv_LuaDir.isEmpty() || !QDir().mkpath(mv_LuaDir))
     {
-        QMessageBox::critical(this, "启动失败", "未找到有效 Steam 路径。");
+        MessageDialog::critical(this, "启动失败", "未找到有效 Steam 路径。");
         QTimer::singleShot(0, this, &MainWindow::close);
         return;
     }
@@ -64,7 +68,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 
 
-    const bool shouldFormat = QMessageBox::question(this, "添加 Lua 文件", "对于所有文件，是否格式化？") == QMessageBox::Yes;
+    const bool shouldFormat = MessageDialog::question(this, "添加 Lua 文件", "对于所有文件，是否格式化？");
 
 
     QMessageBox msg(this);
@@ -120,7 +124,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 
 
-    if (!errorList.isEmpty()) QMessageBox::warning(this, "导入期间发生错误", "导入期间发生错误，以下是导入出错的源文件：\n\n" + errorList.join('\n'));
+    if (!errorList.isEmpty()) MessageDialog::warning(this, "导入期间发生错误", "导入期间发生错误，以下是导入出错的源文件：\n\n" + errorList.join('\n'));
 
     event->acceptProposedAction();
 }
@@ -173,11 +177,12 @@ void MainWindow::editItem(QListWidgetItem *item)
 {
     if (!item)
     {
-        QMessageBox::warning(this, "失败", "未选中任何项");
+        MessageDialog::warning(this, "失败", "未选中任何项");
         return;
     }
 
     EditDialog editDialog(item->data(Constant::Role::path).toString(), item->data(Constant::Role::name).toString(), item->data(Constant::Role::appid).toString(), this);
+    Settings::applyTheme(Settings::currentTheme(), &editDialog);
 
     connect(&editDialog, &EditDialog::editFinished, this,
             [this, item, widget = ui->lst_Items->itemWidget(item)](FunctionLib::FileEditErrorType error, const QString &path, const QString &name, const QString &appid)
@@ -270,7 +275,7 @@ void MainWindow::runItem(QListWidgetItem *item)
 {
     if (!item)
     {
-        QMessageBox::warning(this, "运行游戏失败", "未选中任何项");
+        MessageDialog::warning(this, "运行游戏失败", "未选中任何项");
         return;
     }
 
@@ -308,14 +313,14 @@ void MainWindow::on_btn_DeleteSelectedItem_clicked()
     QListWidgetItem *item = ui->lst_Items->currentItem();
     if (!item)
     {
-        QMessageBox::warning(this, "失败", "未选中任何项");
+        MessageDialog::warning(this, "失败", "未选中任何项");
         return;
     }
 
 
 
     QFile file(item->data(Constant::Role::path).toString());
-    if (QMessageBox::question(this, "删除选中项", "确定删除？\n" + file.fileName()) == QMessageBox::No) return;
+    if (!MessageDialog::question(this, "删除选中项", "确定删除？\n" + file.fileName())) return;
 
     file.remove();
 
@@ -327,7 +332,7 @@ void MainWindow::on_btn_DeleteSelectedItem_clicked()
     }
     else
     {
-        QMessageBox::critical(this, "删除失败", "错误信息：\n" + file.errorString());
+        MessageDialog::critical(this, "删除失败", "错误信息：\n" + file.errorString());
     }
 }
 
@@ -336,7 +341,7 @@ void MainWindow::on_btn_ToggleLuaEnabled_clicked()
     QListWidgetItem *item = ui->lst_Items->currentItem();
     if (!item)
     {
-        QMessageBox::warning(this, "失败", "未选中任何项");
+        MessageDialog::warning(this, "失败", "未选中任何项");
         return;
     }
 
@@ -346,7 +351,7 @@ void MainWindow::on_btn_ToggleLuaEnabled_clicked()
 
     if (FunctionLib::FileEditErrorType renameError = FunctionLib::renameFile(&file, fileInfo.completeBaseName() + "." + newSuffix))
     {
-        QMessageBox::critical(this, "切换失败", FunctionLib::generateFileEditErrorString(renameError));
+        MessageDialog::critical(this, "切换失败", FunctionLib::generateFileEditErrorString(renameError));
         return;
     }
 
@@ -360,6 +365,7 @@ void MainWindow::on_btn_ToggleLuaEnabled_clicked()
 void MainWindow::on_btn_AddLuaFile_clicked()
 {
     AddLuaFileDialog addDialog(mv_LuaDir, this);
+    Settings::applyTheme(Settings::currentTheme(), &addDialog);
 
     connect(&addDialog, &AddLuaFileDialog::addingFinished, this,
             [this](FunctionLib::FileEditErrorType error, const Lua::LuaData &data)
@@ -375,7 +381,7 @@ void MainWindow::on_btn_OpenFile_clicked()
     QListWidgetItem *item = ui->lst_Items->currentItem();
     if (!item)
     {
-        QMessageBox::warning(this, "失败", "未选中任何项");
+        MessageDialog::warning(this, "失败", "未选中任何项");
         return;
     }
 
@@ -399,7 +405,7 @@ void MainWindow::on_btn_OpenPath_clicked()
 
 void MainWindow::on_btn_FormatAll_clicked()
 {
-    bool shouldUpdateFileName = QMessageBox::question(this, "全部格式化", "是否要更新文件名？", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes;
+    bool shouldUpdateFileName = MessageDialog::question(this, "全部格式化", "是否要更新文件名？");
 
     int count = ui->lst_Items->count();
 
@@ -417,7 +423,7 @@ void MainWindow::on_btn_FormatAll_clicked()
         if (error) errorList.append(QString("%1   |:|   %2").arg(QFileInfo(item->data(Constant::Role::path).toString()).fileName(), FunctionLib::generateFileEditErrorString(error, "；")));
     }
 
-    if (!errorList.isEmpty()) QMessageBox::warning(this, "格式化期间发生错误", "格式化期间发生错误，以下是文件名和错误信息：\n\n" + errorList.join('\n'));
+    if (!errorList.isEmpty()) MessageDialog::warning(this, "格式化期间发生错误", "格式化期间发生错误，以下是文件名和错误信息：\n\n" + errorList.join('\n'));
 }
 
 void MainWindow::on_btn_CopyAppid_clicked()
@@ -425,7 +431,7 @@ void MainWindow::on_btn_CopyAppid_clicked()
     QListWidgetItem *item = ui->lst_Items->currentItem();
     if (!item)
     {
-        QMessageBox::warning(this, "失败", "未选中任何项");
+        MessageDialog::warning(this, "失败", "未选中任何项");
         return;
     }
 
@@ -438,7 +444,7 @@ void MainWindow::on_btn_CopyGameName_clicked()
     QListWidgetItem *item = ui->lst_Items->currentItem();
     if (!item)
     {
-        QMessageBox::warning(this, "失败", "未选中任何项");
+        MessageDialog::warning(this, "失败", "未选中任何项");
         return;
     }
 
@@ -451,7 +457,7 @@ void MainWindow::on_btn_CopyInfo_clicked()
     QListWidgetItem *item = ui->lst_Items->currentItem();
     if (!item)
     {
-        QMessageBox::warning(this, "失败", "未选中任何项");
+        MessageDialog::warning(this, "失败", "未选中任何项");
         return;
     }
 
@@ -467,7 +473,7 @@ void MainWindow::on_btn_CopyFileContent_clicked()
     QListWidgetItem *item = ui->lst_Items->currentItem();
     if (!item)
     {
-        QMessageBox::warning(this, "失败", "未选中任何项");
+        MessageDialog::warning(this, "失败", "未选中任何项");
         return;
     }
 
@@ -475,7 +481,7 @@ void MainWindow::on_btn_CopyFileContent_clicked()
     QFile file(item->data(Constant::Role::path).toString());
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        QMessageBox::warning(this, "失败", "读取失败");
+        MessageDialog::warning(this, "失败", "读取失败");
         return;
     }
 
@@ -512,6 +518,7 @@ void MainWindow::on_btn_CloseSteam_clicked()
 void MainWindow::on_btn_Website_clicked()
 {
     OpenWebsiteDialog dlg(this);
+    Settings::applyTheme(Settings::currentTheme(), &dlg);
     dlg.exec();
 }
 
@@ -522,6 +529,7 @@ void MainWindow::on_btn_Search_clicked()
     QListWidgetItem *item = ui->lst_Items->currentItem();
 
     SearchDialog searchDialog(item ? item->data(Constant::Role::name).toString() : "", this);
+    Settings::applyTheme(Settings::currentTheme(), &searchDialog);
     searchDialog.exec();
 }
 
@@ -529,6 +537,7 @@ void MainWindow::on_btn_Search_clicked()
 void MainWindow::on_btn_About_clicked()
 {
     AboutDialog aboutDialog(this);
+    Settings::applyTheme(Settings::currentTheme(), &aboutDialog);
     aboutDialog.exec();
 }
 
@@ -564,3 +573,11 @@ void MainWindow::addItem(const QString &path, const QString &name, const QString
     if (sort) ui->lst_Items->sortItems();
     if (filter) this->filterItems();
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    Settings settingsDialog(this);
+    settingsDialog.exec();
+    Settings::applyTheme(Settings::currentTheme(), this);
+}
+

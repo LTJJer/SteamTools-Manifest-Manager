@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>250</width>
-    <height>483</height>
+    <height>454</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,18 +19,15 @@
   <property name="windowTitle">
    <string>网站</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="gbx_Tools">
+    <widget class="QGroupBox" name="gbx_Tool">
      <property name="title">
       <string>工具</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
-       <widget class="QPushButton" name="btn_Tools_SteamTools">
+       <widget class="QPushButton" name="btn_Tool_SteamTools">
         <property name="text">
          <string>SteamTools</string>
         </property>
@@ -53,30 +50,30 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_Manifest_ManifestHub2">
+       <widget class="QPushButton" name="btn_Manifest_SteamManifestHub_2">
         <property name="text">
-         <string>Manifest Hub 2</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_Manifest_SteamDownloader">
-        <property name="text">
-         <string>清单不求人</string>
+         <string>Steam Manifest Hub</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btn_Manifest_SteamManifestDownloader">
         <property name="text">
-         <string>Steam Manifest Downloader</string>
+         <string>Steam 游戏清单下载器</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_Manifest_SteamManifestHub">
+       <widget class="QPushButton" name="pushButton">
         <property name="text">
-         <string>Steam Manifest Hub</string>
+         <string>清单不求人</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_Manifest_ManifestHub">
+        <property name="text">
+         <string>Manifest Hub</string>
         </property>
        </widget>
       </item>
@@ -84,20 +81,20 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="gbx_DataBase">
+    <widget class="QGroupBox" name="gbx_Data">
      <property name="title">
-      <string>数据库</string>
+      <string>数据</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QPushButton" name="btn_DataBase_SteamDB">
+       <widget class="QPushButton" name="btn_Data_SteamDB">
         <property name="text">
          <string>SteamDB</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_DataBase_SteamUI">
+       <widget class="QPushButton" name="btn_Data_SteamUI">
         <property name="text">
          <string>SteamUI</string>
         </property>
