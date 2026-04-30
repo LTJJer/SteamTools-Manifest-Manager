@@ -2,6 +2,7 @@
 
 #include <QFile>
 #include <QMimeData>
+#include <QWidget>
 
 
 
@@ -70,4 +71,14 @@ QStringList splitStringLines(const QString &content);
 
 
 QStringList getMimeDataPaths(const QMimeData *mime);
+
+
+
+bool isSystemThemeLight();
+bool isThemeLight();
+
+QString getSystemThemeStyleSheet();
+QString getThemeStyleSheet();
+
+void applyThemeStyle(QWidget *widget);
 }

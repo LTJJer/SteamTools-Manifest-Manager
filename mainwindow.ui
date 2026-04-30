@@ -10,12 +10,6 @@
     <height>600</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="acceptDrops">
    <bool>true</bool>
   </property>
@@ -25,444 +19,6 @@
   <property name="windowIcon">
    <iconset resource="resources.qrc">
     <normaloff>:/Resources/Icons/icon.ico</normaloff>:/Resources/Icons/icon.ico</iconset>
-  </property>
-  <property name="styleSheet">
-   <string notr="true">/* ==================== 全局基础样式 ==================== */
-/* 所有QWidget子类默认外观：深色背景、浅灰文字、移除焦点虚线框 */
-QWidget {
-    margin: 0;
-    padding: 0;
-    background-color: #202020;  /* 全局基色：最深色背景 */
-    color: #E0E0E0;             /* 主文字色：保证对比度的浅灰 */
-    outline: none;              /* 移除焦点虚线轮廓（全局统一） */
-}
-
-/* 所有控件禁用态文字统一变暗 */
-QWidget:disabled {
-    color: #505050;             /* 禁用文字色：深灰 */
-}
-
-/* ==================== 按钮（QPushButton） ==================== */
-QPushButton {
-    /* 布局属性优先，再视觉属性 */
-    padding: 6px 12px;
-    min-height: 20px;
-    /* 视觉属性 */
-    background-color: #282828;  /* 按钮背景：略深于全局 */
-    border-radius: 4px;         /* 统一圆角：与输入框一致 */
-}
-
-QPushButton:hover {
-    background-color: #383838;
-    color: #D0D0D0;
-}
-
-QPushButton:pressed {
-    background-color: #1c1c1c;
-    color: #C0C0C0;
-}
-
-QPushButton:disabled {
-    background-color: #252525;
-    color: #505050;             /* 继承QWidget:disabled，此处显式保留以明确 */
-}
-
-/* ==================== 单选/复选框（QRadioButton &amp; QCheckBox） ==================== */
-QRadioButton, QCheckBox {
-    spacing: 8px;               /* 指示器与文字间距 */
-    min-height: 24px;           /* 最小点击高度 */
-}
-
-/* 指示器公共样式 */
-QRadioButton::indicator, 
-QCheckBox::indicator {
-    background-color: #303030;  /* 同输入框背景 */
-    border: 1px solid #404040;  /* 同输入框边框 */
-}
-
-/* 指示器-未选中态交互 */
-QRadioButton::indicator:hover, 
-QCheckBox::indicator:hover {
-    background-color: #383838;
-    border-color: #505050;
-}
-
-QRadioButton::indicator:pressed, 
-QCheckBox::indicator:pressed {
-    background-color: #282828;
-    border-color: #5078A0;      /* 主题蓝：选中提示 */
-}
-
-/* 指示器-选中态基础 */
-QRadioButton::indicator:checked, 
-QCheckBox::indicator:checked {
-    background-color: #5078A0;
-    border-color: #5078A0;
-}
-
-/* 指示器-选中态交互 */
-QRadioButton::indicator:checked:hover, 
-QCheckBox::indicator:checked:hover {
-    background-color: #6088B0;
-    border-color: #6088B0;
-}
-
-QRadioButton::indicator:checked:pressed, 
-QCheckBox::indicator:checked:pressed {
-    background-color: #406890;
-    border-color: #406890;
-}
-
-/* 指示器-禁用态 */
-QRadioButton::indicator:disabled, 
-QCheckBox::indicator:disabled {
-    background-color: #282828;
-    border-color: #383838;
-}
-
-QRadioButton::indicator:disabled:checked, 
-QCheckBox::indicator:disabled:checked {
-    background-color: #383838;
-    border-color: #484848;
-}
-
-/* 指示器尺寸差异化 */
-QRadioButton::indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 4px;         /* 正圆：宽高的一半 */
-}
-
-QCheckBox::indicator {
-    width: 18px;
-    height: 18px;
-    border-radius: 2px;         /* 轻微圆角 */
-}
-
-/* ==================== 分组框（QGroupBox） ==================== */
-QGroupBox {
-    border: 1px solid #404040;
-    border-radius: 4px;
-    margin-top: 20px;           /* 顶部留空：避免标题重叠 */
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    subcontrol-position: top center;
-    padding: 0 6px;             /* 水平留白：避免文字贴边 */
-}
-
-/* ==================== 列表视图（QListView） ==================== */
-QListView {
-    background-color: #303030;  /* 略深于全局背景 */
-    border: none;               /* 融入父容器 */
-    selection-background-color: #383838;
-    selection-color: #E0E0E0;   /* 继承全局，显式保留 */
-    alternate-background-color: #353535;  /* 交替行背景 */
-}
-
-QListView::item:hover {
-    background-color: #353535;
-}
-
-QListView::item:pressed {
-    background-color: #282828;  /* 同按钮按下背景 */
-}
-
-QListView::item:selected:hover {
-    background-color: #282828;
-    border: 1px solid #404040;
-}
-
-/* ==================== 标签页组件（QTabWidget &amp; QTabBar） ==================== */
-QTabBar::tab {
-    /* 布局属性 */
-    padding: 6px 12px;
-    min-height: 20px;
-    margin-right: 2px;          /* 标签间距 */
-    /* 视觉属性 */
-    background-color: #282828;  /* 同按钮默认背景 */
-    border: 1px solid #404040;
-    border-bottom: none;        /* 与内容面板衔接 */
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-}
-
-QTabBar::tab:hover {
-    background-color: #383838;
-    color: #D0D0D0;
-}
-
-QTabBar::tab:selected {
-    background-color: #383838;
-    color: #E0E0E0;
-    border-top: 1px solid #5078A0;  /* 主题蓝高亮 */
-}
-
-QTabBar::tab:pressed {
-    background-color: #181818;
-    color: #C0C0C0;
-}
-
-QTabBar::tab:disabled {
-    background-color: #252525;
-    color: #505050;
-    border-color: #383838;
-}
-
-/* 标签页内容面板 */
-QTabWidget::pane {
-    border: 1px solid #404040;
-    border-top: none;           /* 与标签栏无缝衔接 */
-    margin-top: -1px;           /* 消除缝隙 */
-}
-
-/* ==================== 输入框类（可输入控件） ==================== */
-/* 基础样式：单行+多行输入控件 */
-QLineEdit, QDateTimeEdit, QSpinBox, QDoubleSpinBox,
-QComboBox, QTextEdit, QPlainTextEdit {
-    /* 布局属性 */
-    min-height: 20px;           /* 与按钮对齐 */
-    /* 视觉属性 */
-    background-color: #303030;  /* 同列表背景 */
-    border: 1px solid #404040;
-    border-radius: 4px;
-    color: #D0D0D0;             /* 输入文字略亮于主文字 */
-}
-
-/* 输入框-验证失败态 */
-QLineEdit[valid=&quot;false&quot;], QDateTimeEdit[valid=&quot;false&quot;], QSpinBox[valid=&quot;false&quot;], 
-QDoubleSpinBox[valid=&quot;false&quot;], QComboBox[valid=&quot;false&quot;], QTextEdit[valid=&quot;false&quot;], 
-QPlainTextEdit[valid=&quot;false&quot;] {
-    color: #E04040;
-}
-
-/* 单行输入框内边距（多行避免滚动问题，不包含） */
-QLineEdit, QDateTimeEdit, QSpinBox, QDoubleSpinBox, QComboBox {
-    padding: 4px 8px;
-}
-
-/* 下拉框-预留下拉按钮空间 */
-QComboBox {
-    padding-right: 28px;        /* 28px = 按钮20px + 留白8px */
-}
-
-QComboBox:editable {
-    padding-right: 8px;         /* 可编辑款：标准内边距 */
-}
-
-/* 输入框-交互态 */
-QLineEdit:hover, QDateTimeEdit:hover, QSpinBox:hover, QDoubleSpinBox:hover,
-QComboBox:hover, QComboBox:editable:hover, QTextEdit:hover, QPlainTextEdit:hover {
-    background-color: #383838;
-    border-color: #505050;
-}
-
-QLineEdit:focus, QDateTimeEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus,
-QComboBox:focus, QComboBox:editable:focus, QTextEdit:focus, QPlainTextEdit:focus {
-    border-color: #5078A0;      /* 主题蓝聚焦 */
-}
-
-/* 输入框-禁用态 */
-QLineEdit:disabled, QDateTimeEdit:disabled, QSpinBox:disabled, QDoubleSpinBox:disabled,
-QComboBox:disabled, QComboBox:editable:disabled, QTextEdit:disabled, QPlainTextEdit:disabled {
-    background-color: #282828;
-    border-color: #383838;
-    color: #505050;             /* 继承QWidget:disabled，显式保留 */
-}
-
-/* 输入框-只读态 */
-QLineEdit:read-only, QDateTimeEdit:read-only, QSpinBox:read-only, QDoubleSpinBox:read-only,
-QTextEdit:read-only, QPlainTextEdit:read-only {
-    background-color: #282828;
-    color: #A0A0A0;             /* 只读文字：中灰（比禁用亮） */
-}
-
-/* 占位符文字 */
-QLineEdit::placeholder {
-    color: #606060;             /* 占位符：中灰 */
-}
-
-/* ==================== 下拉框（QComboBox）专属样式 ==================== */
-QComboBox:on {
-    background-color: #383838;
-    border-color: #5078A0;
-}
-
-/* 下拉按钮区域 */
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 20px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-}
-
-QComboBox::drop-down:hover {
-    background-color: #383838;
-}
-
-QComboBox::drop-down:pressed {
-    background-color: #282828;
-}
-
-QComboBox::drop-down:disabled {
-    background-color: #252525;
-}
-
-/* 下拉列表视图 */
-QComboBox QAbstractItemView {
-    background-color: #303030;
-    border: 1px solid #5078A0;  /* 主题蓝边框 */
-    selection-background-color: #383838;
-    selection-color: #E0E0E0;
-}
-
-QComboBox QAbstractItemView::item:hover {
-    background-color: #353535;
-}
-
-QComboBox QAbstractItemView::item:selected {
-    background-color: #383838;
-}
-
-/* ==================== 数字/日期编辑框按钮（QAbstractSpinBox） ==================== */
-QAbstractSpinBox::up-button, 
-QAbstractSpinBox::down-button {
-    width: 20px;
-}
-
-/* 按钮圆角匹配输入框 */
-QAbstractSpinBox::up-button {
-    border-top-right-radius: 4px;
-}
-
-QAbstractSpinBox::down-button {
-    border-bottom-right-radius: 4px;
-}
-
-/* 按钮交互态 */
-QAbstractSpinBox::up-button:hover, 
-QAbstractSpinBox::down-button:hover {
-    background-color: #383838;
-}
-
-QAbstractSpinBox::up-button:pressed, 
-QAbstractSpinBox::down-button:pressed {
-    background-color: #282828;
-}
-
-QAbstractSpinBox::up-button:disabled, 
-QAbstractSpinBox::down-button:disabled {
-    background-color: #252525;
-}
-
-/* ==================== 箭头样式（通用） ==================== */
-/* 基础箭头：透明边框绘制三角形 */
-QComboBox::down-arrow,
-QAbstractSpinBox::up-arrow,
-QAbstractSpinBox::down-arrow {
-    width: 0;
-    height: 0;
-    
-    /* 此处透明必须用 #00FFFFFF，否则有 bug*/
-    border-left: 4px solid #00FFFFFF;
-    border-right: 4px solid #00FFFFFF;
-}
-
-/* 上箭头（数值增加） */
-QAbstractSpinBox::up-arrow {
-    border-bottom: 4px solid #E0E0E0;
-}
-
-QAbstractSpinBox::up-button:hover::up-arrow {
-    border-bottom-color: #D0D0D0;
-}
-
-QAbstractSpinBox::up-button:pressed::up-arrow {
-    border-bottom-color: #C0C0C0;
-}
-
-QAbstractSpinBox::up-button:disabled::up-arrow {
-    border-bottom-color: #505050;
-}
-
-/* 下箭头（数值减少/下拉框） */
-QAbstractSpinBox::down-arrow,
-QComboBox::down-arrow {
-    border-top: 4px solid #E0E0E0;
-}
-
-QAbstractSpinBox::down-button:hover::down-arrow,
-QComboBox::drop-down:hover::down-arrow {
-    border-top-color: #D0D0D0;
-}
-
-QAbstractSpinBox::down-button:pressed::down-arrow,
-QComboBox::drop-down:pressed::down-arrow {
-    border-top-color: #C0C0C0;
-}
-
-QAbstractSpinBox::down-button:disabled::down-arrow,
-QComboBox:disabled::down-arrow,
-QComboBox::drop-down:disabled::down-arrow {
-    border-top-color: #505050;
-}
-
-/* ==================== 垂直滚动条（QScrollBar:vertical） ==================== */
-/* 隐藏上下翻页区域背景 */
-QScrollBar::add-page:vertical, 
-QScrollBar::sub-page:vertical {
-    background: none;
-}
-
-/* 滚动条容器 */
-QScrollBar:vertical {
-    background: #303030;        /* 同列表背景 */
-    width: 8px;
-}
-
-/* 滑块样式 */
-QScrollBar::handle:vertical {
-    background: #585858;        /* 默认灰色 */
-    min-height: 20px;           /* 最小高度：避免过短 */
-}
-
-QScrollBar::handle:vertical:hover {
-    background: #686868;        /* 悬浮变亮 */
-}
-
-QScrollBar::handle:vertical:pressed {
-    background: #5078A0;        /* 按下：主题蓝 */
-}
-
-/* 隐藏上下箭头按钮 */
-QScrollBar::add-line:vertical, 
-QScrollBar::sub-line:vertical {
-    height: 0;
-}
-
-/* ==================== 文本选中样式 ==================== */
-/* 正常态选中 */
-QLineEdit, QTextEdit, QPlainTextEdit, QSpinBox, QDoubleSpinBox, QDateTimeEdit,
-QComboBox:editable {
-    selection-background-color: #5078A0;
-    selection-color: #FFFFFF;
-}
-
-/* 只读态选中 */
-QLineEdit:read-only, QTextEdit:read-only, QPlainTextEdit:read-only,
-QSpinBox:read-only, QDoubleSpinBox:read-only, QDateTimeEdit:read-only {
-    selection-background-color: #383838;
-    selection-color: #E0E0E0;
-}
-
-/* 禁用态选中 */
-QLineEdit:disabled, QTextEdit:disabled, QPlainTextEdit:disabled,
-QSpinBox:disabled, QDoubleSpinBox:disabled, QDateTimeEdit:disabled {
-    selection-background-color: #383838;
-    selection-color: #505050;
-}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -593,16 +149,17 @@ QSpinBox:disabled, QDoubleSpinBox:disabled, QDateTimeEdit:disabled {
          <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">QListWidget::item
-{
-    color: transparent;
+         <string notr="true">QListWidget {
+    selection-color: rgba(255, 255, 255, 0);
 }
 
-QListWidget QWidget
-{
-    background-color: transparent;
+QListWidget::item, QListWidget::item:selected {
+    color: rgba(255, 255, 255, 0);
 }
-</string>
+
+QListWidget QWidget {
+    background-color: rgba(255, 255, 255, 0);
+}</string>
         </property>
         <property name="showDropIndicator" stdset="0">
          <bool>false</bool>
@@ -625,8 +182,8 @@ QListWidget QWidget
     </item>
     <item>
      <layout class="QGridLayout" name="RightSide0">
-      <item row="4" column="1">
-       <widget class="QPushButton" name="btn_CopyGameName">
+      <item row="3" column="1">
+       <widget class="QPushButton" name="btn_FormatAll">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -634,14 +191,16 @@ QListWidget QWidget
          </sizepolicy>
         </property>
         <property name="text">
-         <string>复制
-选中项
-游戏名</string>
+         <string>格式化
+全部项</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QPushButton" name="btn_CopyAppid">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="btn_Edit">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -649,14 +208,62 @@ QListWidget QWidget
          </sizepolicy>
         </property>
         <property name="text">
-         <string>复制
-选中项
-AppID</string>
+         <string>编辑
+选中项</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
-       <widget class="QPushButton" name="btn_CopyFileContent">
+      <item row="9" column="0">
+       <widget class="QPushButton" name="btn_Settings">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>设置</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QPushButton" name="btn_CloseSteam">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>关闭
+Steam</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QPushButton" name="btn_Website">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>网站</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="btn_CopyInfo">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -666,7 +273,21 @@ AppID</string>
         <property name="text">
          <string>复制
 选中项
-文件内容</string>
+信息</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="btn_OpenFile">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>打开
+文件</string>
         </property>
        </widget>
       </item>
@@ -684,8 +305,8 @@ Steam</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="btn_FormatAll">
+      <item row="5" column="1">
+       <widget class="QPushButton" name="btn_CopyFileContent">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -693,8 +314,9 @@ Steam</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>格式化
-全部项</string>
+         <string>复制
+选中项
+文件内容</string>
         </property>
        </widget>
       </item>
@@ -715,8 +337,11 @@ Steam</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="0">
-       <widget class="QPushButton" name="btn_About">
+      <item row="6" column="0">
+       <widget class="QPushButton" name="btn_Run">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -724,35 +349,8 @@ Steam</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>关于</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="1">
-       <widget class="QPushButton" name="btn_CloseSteam">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>关闭
-Steam</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QPushButton" name="btn_OpenFile">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>打开
-文件</string>
+         <string>运行
+选中项</string>
         </property>
        </widget>
       </item>
@@ -781,6 +379,19 @@ Lua 文件</string>
         <property name="text">
          <string>刷新
 列表</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QPushButton" name="btn_About">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>关于</string>
         </property>
        </widget>
       </item>
@@ -816,8 +427,8 @@ Lua 文件</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QPushButton" name="btn_CopyInfo">
+      <item row="1" column="0">
+       <widget class="QPushButton" name="btn_ToggleLuaEnabled">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -825,9 +436,8 @@ Lua 文件</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>复制
-选中项
-信息</string>
+         <string>启用/禁用
+Lua 文件</string>
         </property>
        </widget>
       </item>
@@ -847,11 +457,8 @@ Lua 文件</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
-       <widget class="QPushButton" name="btn_Run">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
+      <item row="4" column="0">
+       <widget class="QPushButton" name="btn_CopyAppid">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -859,13 +466,14 @@ Lua 文件</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>运行
-选中项</string>
+         <string>复制
+选中项
+AppID</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="btn_ToggleLuaEnabled">
+      <item row="4" column="1">
+       <widget class="QPushButton" name="btn_CopyGameName">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -873,47 +481,9 @@ Lua 文件</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>启用/禁用
-Lua 文件</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="btn_Edit">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>编辑
-选中项</string>
-        </property>
-        <property name="checkable">
-         <bool>false</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="default">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0">
-       <widget class="QPushButton" name="btn_Website">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>网站</string>
+         <string>复制
+选中项
+游戏名</string>
         </property>
        </widget>
       </item>
@@ -946,7 +516,6 @@ Lua 文件</string>
   <tabstop>btn_CloseSteam</tabstop>
   <tabstop>btn_Website</tabstop>
   <tabstop>btn_Search</tabstop>
-  <tabstop>btn_About</tabstop>
  </tabstops>
  <resources>
   <include location="resources.qrc"/>

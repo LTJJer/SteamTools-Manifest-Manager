@@ -4,4 +4,8 @@
         <file>Resources/Icons/icon.ico</file>
         <file>Resources/Icons/icon100p.png</file>
     </qresource>
+    <qresource prefix="/StyleSheet">
+        <file>DarkThemeStyleSheet.qss</file>
+        <file>LightThemeStyleSheet.qss</file>
+    </qresource>
 </RCC>

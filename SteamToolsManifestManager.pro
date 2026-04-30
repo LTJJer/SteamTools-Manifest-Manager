@@ -31,9 +31,11 @@ HEADERS += \
     addluafiledialog.hpp \
     aboutdialog.hpp \
     openwebsitedialog.hpp \
-    searchdialog.hpp
+    searchdialog.hpp \
+    settingsdialog.hpp
 
 SOURCES += \
+    constant.cpp \
     lua.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -42,7 +44,8 @@ SOURCES += \
     addluafiledialog.cpp \
     aboutdialog.cpp \
     openwebsitedialog.cpp \
-    searchdialog.cpp
+    searchdialog.cpp \
+    settingsdialog.cpp
 
 FORMS += \
     mainwindow.ui \
@@ -50,7 +53,8 @@ FORMS += \
     addluafiledialog.ui \
     aboutdialog.ui \
     openwebsitedialog.ui \
-    searchdialog.ui
+    searchdialog.ui \
+    settingsdialog.ui
 
 RESOURCES += \
     resources.qrc
@@ -59,12 +63,16 @@ OTHER_FILES += \
     .gitignore \
     LICENSE.txt \
     README.md \
-    index.html
+    index.html \
+    _base_theme.scss \
+    DarkThemeStyleSheet.scss \
+    LightThemeStyleSheet.scss \
+    SCSSCompilation.bat
 
 
 
 # 应用信息
-RC_ICONS = ./Resources/Icons/icon.ico
+RC_ICONS = Resources/Icons/icon.ico
 
 VERSION = 1.7.4
 MAKE_TARGET_COMPANY = "LT_JJ"

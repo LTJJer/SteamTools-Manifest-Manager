@@ -54,6 +54,7 @@ private slots:
     void on_btn_CloseSteam_clicked();
     void on_btn_Website_clicked();
     void on_btn_Search_clicked();
+    void on_btn_Settings_clicked();
     void on_btn_About_clicked();
 
 private:

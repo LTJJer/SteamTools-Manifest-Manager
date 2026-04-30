@@ -23,7 +23,7 @@ AddLuaFileDialog::AddLuaFileDialog(const QString &luaDir, QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->le_FileName->setValidator(new QRegularExpressionValidator(Constant::pathRegex, this));
+    ui->le_FileName->setValidator(new QRegularExpressionValidator(Constant::pathPattern, this));
 }
 
 AddLuaFileDialog::~AddLuaFileDialog()

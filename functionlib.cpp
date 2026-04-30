@@ -1,5 +1,8 @@
 #include "functionlib.hpp"
 
+#include "constant.hpp"
+#include "settingsdialog.hpp"
+
 #include <QProcess>
 #include <QTimer>
 #include <QDesktopServices>
@@ -8,6 +11,9 @@
 #include <QRegularExpression>
 #include <QUrlQuery>
 #include <QFileInfo>
+#include <QApplication>
+#include <QSettings>
+#include <qt_windows.h>
 
 
 
@@ -185,4 +191,35 @@ QStringList getMimeDataPaths(const QMimeData *mime)
     return paths;
 }
 
+
+
+bool isSystemThemeLight()
+{
+    return QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QSettings::NativeFormat).value("AppsUseLightTheme", 1) == 1;
+}
+
+bool isThemeLight()
+{
+    int mode = SettingsDialog::getSettings(SettingsDialog::Style).toInt();
+
+    return (mode == 0) ? isSystemThemeLight() : (mode == 1 ? true : false);
+}
+
+QString getSystemThemeStyleSheet()
+{
+    return isSystemThemeLight() ? Constant::getLightThemeStyleSheet() : Constant::getDarkThemeStyleSheet();
+}
+
+QString getThemeStyleSheet()
+{
+    return isThemeLight() ? Constant::getLightThemeStyleSheet() : Constant::getDarkThemeStyleSheet();
+}
+
+void applyThemeStyle(QWidget *widget)
+{
+    widget->setStyleSheet(getThemeStyleSheet());
+
+    const HWND hwnd = reinterpret_cast<HWND>(widget->winId());
+    ::SetWindowPos(hwnd, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+}
 }

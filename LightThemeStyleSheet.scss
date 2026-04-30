@@ -1,0 +1,43 @@
+// ==================== 亮色体系 ====================
+
+@use 'base_theme' with (
+// 背景色阶
+$bg-darkest:      #F5F5F5,
+$bg-deep:         #D5D5D5,
+$bg-dark:         #CCCCCC,
+$bg-base:         #FFFFFF,
+$bg-surface:      #FFFFFF,
+$bg-subtle:       #F0F0F0,
+$bg-raised:       #E4E4E4,
+$bg-disabled:     #FEFEFE,
+
+// 边框色
+$border-default:           #D0D0D0,
+$border-hover:             #B0B0B0,
+$border-disabled:          #E0E0E0,
+$border-checked-disabled:  #CCCCCC,
+
+// 主题蓝
+$accent:          #4488EE,
+$accent-hover:    #4078B0,
+$accent-active:   #205890,
+
+// 文字色
+$text-primary:      #202020,
+$text-secondary:    #303030,
+$text-muted:        #606060,
+$text-readonly:     #808080,
+$text-placeholder:  #A0A0A0,
+$text-disabled:     #B0B0B0,
+$text-danger:       #D03030,
+$text-inverse:      #FFFFFF,
+
+// 控件
+$btn-bg:                 #FFFFFF,
+$list-item-hover:        #C8C8C8,
+$scrollbar-handle:       #C0C0C0,
+$scrollbar-handle-hover: #A0A0A0,
+
+// 透明色（箭头专用，规避 Qt 渲染 bug）
+$transparent:       rgba(255, 255, 255, 0),
+);
