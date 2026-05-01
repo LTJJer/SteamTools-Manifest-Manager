@@ -107,7 +107,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_Complate">
+        <widget class="QPushButton" name="btn_Complete">
          <property name="text">
           <string>完成</string>
          </property>
