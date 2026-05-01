@@ -248,6 +248,16 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="btn_Donate_LT_JJ_WeChat">
+        <property name="toolTip">
+         <string>https://www.ifdian.net/a/LT_JJ</string>
+        </property>
+        <property name="text">
+         <string>微信</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

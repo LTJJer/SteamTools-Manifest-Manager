@@ -33,7 +33,8 @@ HEADERS += \
     aboutdialog.hpp \
     openwebsitedialog.hpp \
     searchdialog.hpp \
-    settingsdialog.hpp
+    settingsdialog.hpp \
+    wechatdonatedialog.hpp
 
 SOURCES += \
     constant.cpp \
@@ -46,7 +47,8 @@ SOURCES += \
     aboutdialog.cpp \
     openwebsitedialog.cpp \
     searchdialog.cpp \
-    settingsdialog.cpp
+    settingsdialog.cpp \
+    wechatdonatedialog.cpp
 
 FORMS += \
     mainwindow.ui \
@@ -55,7 +57,8 @@ FORMS += \
     aboutdialog.ui \
     openwebsitedialog.ui \
     searchdialog.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    wechatdonatedialog.ui
 
 RESOURCES += \
     resources.qrc
@@ -75,7 +78,7 @@ OTHER_FILES += \
 # 应用信息
 RC_ICONS = Resources/Icons/icon.ico
 
-VERSION = 1.8.1
+VERSION = 1.8.2
 MAKE_TARGET_COMPANY = "LT_JJ"
 QMAKE_TARGET_DESCRIPTION = $${TARGET}
 QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2025-2026 LT_JJ. Licensed under MIT."

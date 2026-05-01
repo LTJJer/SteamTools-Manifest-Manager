@@ -22,6 +22,8 @@ private slots:
 
     void on_btn_Donate_LT_JJ_Ifdian_clicked();
 
+    void on_btn_Donate_LT_JJ_WeChat_clicked();
+
 private:
     Ui::AboutDialog *ui;
 };

@@ -1,6 +1,8 @@
 #include "aboutdialog.hpp"
 #include "ui_aboutdialog.h"
 
+#include "wechatdonatedialog.hpp"
+
 #include <QDesktopServices>
 #include <QUrl>
 
@@ -35,4 +37,10 @@ void AboutDialog::on_btn_LT_JJ_Bilibili_clicked()
 void AboutDialog::on_btn_Donate_LT_JJ_Ifdian_clicked()
 {
     QDesktopServices::openUrl(QUrl("https://www.ifdian.net/a/LT_JJ"));
+}
+
+void AboutDialog::on_btn_Donate_LT_JJ_WeChat_clicked()
+{
+    WeChatDonateDialog dlg(this);
+    dlg.exec();
 }

@@ -8,4 +8,7 @@
         <file>DarkThemeStyleSheet.qss</file>
         <file>LightThemeStyleSheet.qss</file>
     </qresource>
+    <qresource prefix="/Resources">
+        <file>WeChatDonateQRCode.png</file>
+    </qresource>
 </RCC>
