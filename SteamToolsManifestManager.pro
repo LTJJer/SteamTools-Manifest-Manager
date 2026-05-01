@@ -74,7 +74,7 @@ OTHER_FILES += \
 # 应用信息
 RC_ICONS = Resources/Icons/icon.ico
 
-VERSION = 1.7.4
+VERSION = 1.8.0.0
 MAKE_TARGET_COMPANY = "LT_JJ"
 QMAKE_TARGET_DESCRIPTION = $${TARGET}
 QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2025-2026 LT_JJ. Licensed under MIT."
