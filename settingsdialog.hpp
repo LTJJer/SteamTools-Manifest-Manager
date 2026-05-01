@@ -21,7 +21,7 @@ public:
     };
 
 signals:
-    void settingsChenged(SettingsDialog::SettingsItems item, QVariant value);
+    void settingsChanged(SettingsDialog::SettingsItems item, QVariant value);
 
 public:
     static QString getSettingsName(SettingsItems item);
@@ -40,7 +40,7 @@ public:
 
 private slots:
     void on_lst_Category_currentRowChanged(int currentRow);
-    void on_btn_Complate_clicked();
+    void on_btn_Complete_clicked();
     // 设置项
     void on_cbo_Style_currentIndexChanged(int index);
 

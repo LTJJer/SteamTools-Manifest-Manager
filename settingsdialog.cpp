@@ -68,7 +68,7 @@ SettingsDialog::~SettingsDialog()
 void SettingsDialog::setSettings(const SettingsItems item, const QVariant &value)
 {
     Constant::getSettings().setValue(getSettingsName(item), value);
-    emit settingsChenged(item, value);
+    emit settingsChanged(item, value);
 }
 
 void SettingsDialog::advanceUpdateStyle(int mode)
@@ -102,7 +102,7 @@ void SettingsDialog::on_lst_Category_currentRowChanged(int currentRow)
     ui->swgt_Settings->setCurrentIndex(currentRow);
 }
 
-void SettingsDialog::on_btn_Complate_clicked()
+void SettingsDialog::on_btn_Complete_clicked()
 {
     this->close();
 }

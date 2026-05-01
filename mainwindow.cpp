@@ -535,7 +535,7 @@ void MainWindow::on_btn_Settings_clicked()
 {
     SettingsDialog dlg(this);
 
-    connect(&dlg, &SettingsDialog::settingsChenged, this,
+    connect(&dlg, &SettingsDialog::settingsChanged, this,
             [this](SettingsDialog::SettingsItems item)
             {
                 if (item == SettingsDialog::Style) FunctionLib::applyThemeStyle(this);
