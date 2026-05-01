@@ -93,8 +93,7 @@ DESTDIR = $${PWD}/bin/$${BUILD_TYPE}
 
 
 # 部署
-win32
-{
+win32 {
     EXE_NAME = $${TARGET}.exe
     BUILD_EXE = $${DESTDIR}/$${EXE_NAME}
 
