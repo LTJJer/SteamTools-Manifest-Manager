@@ -1,4 +1,5 @@
 # to-do:
+# 添加导出 Lua 功能
 # 使编辑可以直接编辑
 # 添加自动更新软件功能
 # 添加窗口导入支持导入压缩包
@@ -74,7 +75,7 @@ OTHER_FILES += \
 # 应用信息
 RC_ICONS = Resources/Icons/icon.ico
 
-VERSION = 1.8.0.1
+VERSION = 1.8.1
 MAKE_TARGET_COMPANY = "LT_JJ"
 QMAKE_TARGET_DESCRIPTION = $${TARGET}
 QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2025-2026 LT_JJ. Licensed under MIT."
@@ -82,6 +83,8 @@ QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2025-2026 LT_JJ. Licensed under MIT."
 
 
 # 环境配置
+DEFINES += APP_VERSION=\\\"$${VERSION}\\\"
+
 CONFIG(debug, debug|release) {
     BUILD_TYPE = "Debug"
 } else {

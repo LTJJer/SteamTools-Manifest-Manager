@@ -57,9 +57,6 @@ public:
     void setPath(const QString &path);
     void setContent(const QString &content);
 
-    void formatContent();
-    void formatContent(const QString &name, const QString &appid);
-
 public:
     bool hasPath() const;
     bool hasContent() const;
@@ -76,14 +73,22 @@ protected:
 LuaInfo findLuaInfo(const QString &content, const QString &defaultName = "", const QString &defaultAppid = "");
 LuaInfo findLuaInfo(const QStringList &content, const QString &defaultName = "", const QString &defaultAppid = "");
 
-QString formattedLua(const QString &content, const QString &name, const QString &appid);
-void formatLua(QString &content, const QString &name, const QString &appid);
-void formatLua(QStringList &content, const QString &name, const QString &appid);
+QStringList formattedLuaList(const QString &content, const QString &name, const QString &appid, bool shouldInsertInfo = true);
+QString formattedLuaString(const QString &content, const QString &name, const QString &appid, bool shouldInsertInfo = true);
+void formatLua(QString &content, const QString &name, const QString &appid, bool shouldInsertInfo = true);
 
+/*
+ * -
+ * - 文件已存在时，默认不覆盖（confirmOverwrite == nullptr 时）
+ * -
+ * - error:
+ * - - NewNameExisted: 当文件已存在且不覆盖此文件
+ * - - OpenFileFailed: 写入目标文件失败
+*/
 FunctionLib::FileEditErrorType addLuaFile(
     const QString &targetDir, QString content,
     QString name = "", QString appid = "", QString fileName = "",
-    bool shouldFormat = true, bool intelligentName = true, bool intelligentAppid = true, bool fileNameUseAppid = true,
+    bool shouldInsertInfo = true, bool shouldFormat = true, bool intelligentName = true, bool intelligentAppid = true, bool fileNameUseAppid = true,
     LuaData *luaData = nullptr, std::function<bool (const QString &filePath)> confirmOverwrite = nullptr);
 
 FunctionLib::FileEditErrorType editLuaFile(QFile *file, const QString &name, const QString &appid, bool shouldRename = true);

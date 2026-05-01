@@ -52,8 +52,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 
     // 设置
     {
-        QSettings settings = Constant::getSettings();
-
         ui->cbo_Style->setCurrentIndex(getSettings(Style).toInt());
     }
 }

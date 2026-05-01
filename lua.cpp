@@ -132,15 +132,15 @@ bool LuaData::hasContent() const
     return !mv_content.isEmpty();
 }
 
-void LuaData::formatContent()
-{
-    Lua::formatLua(mv_content, mv_name, mv_appid);
-}
+// void LuaData::formatContent()
+// {
+//     Lua::formatLua(mv_content, mv_name, mv_appid);
+// }
 
-void LuaData::formatContent(const QString &name, const QString &appid)
-{
-    Lua::formatLua(mv_content, name, appid);
-}
+// void LuaData::formatContent(const QString &name, const QString &appid)
+// {
+//     Lua::formatLua(mv_content, name, appid);
+// }
 
 void LuaData::setValidInfo(const LuaInfo &info)
 {
@@ -190,7 +190,7 @@ LuaInfo findLuaInfo(const QStringList &content, const QString &defaultName, cons
 
 
 
-QString formattedLua(const QString &content, const QString &name, const QString &appid)
+QStringList formattedLuaList(const QString &content, const QString &name, const QString &appid, bool shouldInsertInfo)
 {
     static const QRegularExpression pattern(R"pattern((?<!\w)addappid\h*\(\h*(?<appid>\d+)\h*(?:,\h*(?<type>\d+)\h*(?:,\h*(?<quote>["'])(?<depot>\w+)\k<quote>\h*)?)?\))pattern");
 
@@ -215,17 +215,27 @@ QString formattedLua(const QString &content, const QString &name, const QString 
         lines.append(line);
     }
 
-    return LuaInfo::toString(name, appid) + "\n" + lines.join('\n');
+    if (shouldInsertInfo)
+    {
+        const QStringList info = LuaInfo::toList(name, appid);
+
+        lines.prepend(info[2]);
+        lines.prepend(info[1]);
+        lines.prepend(info[0]);
+    }
+
+
+    return lines;
 }
 
-void formatLua(QString &content, const QString &name, const QString &appid)
+QString formattedLuaString(const QString &content, const QString &name, const QString &appid, bool shouldInsertInfo)
 {
-    content = formattedLua(content, name, appid);
+    return formattedLuaList(content, name, appid, shouldInsertInfo).join('\n');
 }
 
-void formatLua(QStringList &content, const QString &name, const QString &appid)
+void formatLua(QString &content, const QString &name, const QString &appid, bool shouldInsertInfo)
 {
-    content = FunctionLib::splitStringLines(formattedLua(content.join('\n'), name, appid));
+    content = formattedLuaList(content, name, appid, shouldInsertInfo).join('\n');
 }
 
 
@@ -233,7 +243,7 @@ void formatLua(QStringList &content, const QString &name, const QString &appid)
 FunctionLib::FileEditErrorType addLuaFile(
     const QString &targetDir, QString content,
     QString name, QString appid, QString fileName,
-    bool shouldFormat, bool intelligentName, bool intelligentAppid, bool fileNameUseAppid,
+    bool shouldInsertInfo, bool shouldFormat, bool intelligentName, bool intelligentAppid, bool fileNameUseAppid,
     LuaData *luaData, std::function<bool (const QString &filePath)> confirmOverwrite)
 {
     // 数据准备
@@ -246,8 +256,8 @@ FunctionLib::FileEditErrorType addLuaFile(
     }
 
 
-    if (shouldFormat) formatLua(content, name, appid);
-    else content.prepend(QString("-- 游戏名称: %1\n-- AppID: %2\n\n").arg(name, appid));
+    if (shouldFormat) formatLua(content, name, appid, shouldInsertInfo);
+    else if (shouldInsertInfo) content.prepend(QString("-- 游戏名称: %1\n-- AppID: %2\n\n").arg(name, appid));
 
 
     if (fileNameUseAppid) fileName = appid;
@@ -282,7 +292,7 @@ FunctionLib::FileEditErrorType editLuaFile(QFile *file, const QString &name, con
 
     if (!file->open(QIODevice::ReadOnly | QIODevice::Text)) return errorType | FunctionLib::OpenFileFailed;
 
-    QString content = formattedLua(QTextStream(file).readAll(), name, appid);
+    QString content = formattedLuaString(QTextStream(file).readAll(), name, appid);
     file->close();
 
     if (!file->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) return errorType | FunctionLib::OpenFileFailed;

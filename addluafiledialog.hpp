@@ -18,6 +18,11 @@ class AddLuaFileDialog : public QDialog
     Q_OBJECT
 
 signals:
+    /*
+     * -
+     * - error:
+     * - - OpenFileFailed: 写入目标文件失败
+    */
     void addingFinished(FunctionLib::FileEditErrorType error, const Lua::LuaData &data);
 
 public:
@@ -40,7 +45,7 @@ private:
 private slots:
     void on_importButton_clicked();
 
-    void on_CancelButton_clicked();
+    void on_btn_Cancel_clicked();
 
-    void on_OKButton_clicked();
+    void on_btn_Confirm_clicked();
 };

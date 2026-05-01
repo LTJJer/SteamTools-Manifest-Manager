@@ -147,8 +147,6 @@
 
         .btn:hover {
             background-color: #1177bb;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(11, 99, 156, 0.3);
         }
 
         .go-download-btn {
@@ -410,7 +408,7 @@
             <h2 class="section-title">下载</h2>
             <div class="download-buttons">
                 <a href="https://github.com/LTJJer/SteamTools-Manifest-Manager/releases/latest" target="_blank" class="btn">从 GitHub 下载</a>
-                <a href="" onclick="openModal(); return false;" class="btn">从 蓝奏云 下载</a>
+                <a href="#" onclick="openModal(); return false;" class="btn">从 蓝奏云 下载</a>
             </div>
             <div class="requirements">
                 <p>系统要求：Windows 系统</p>
@@ -473,7 +471,7 @@
             </ul>
             <h3>卸载</h3>
             <ul>
-                <li>直接删掉软件文件和快捷方式即可，这软件不会保存任何数据</li>
+                <li>直接删掉软件文件和快捷方式即可，这软件的设置保存在根目录下，不会往 注册表 和 AppData 里写东西</li>
             </ul>
         </section>
 

@@ -37,6 +37,16 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="chk_shouldInsertInfo">
+       <property name="text">
+        <string>插入信息：</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>游戏名：</string>
@@ -185,14 +195,17 @@ setAppticket(int AppID, string Ticket)</string>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="OKButton">
+      <widget class="QPushButton" name="btn_Confirm">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="text">
         <string>确定</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="CancelButton">
+      <widget class="QPushButton" name="btn_Cancel">
        <property name="text">
         <string>取消</string>
        </property>
@@ -203,5 +216,38 @@ setAppticket(int AppID, string Ticket)</string>
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>chk_shouldInsertInfo</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>le_Appid</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>544</x>
+     <y>30</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chk_shouldInsertInfo</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>le_Name</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>11</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>11</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

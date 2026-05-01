@@ -100,20 +100,20 @@ void AddLuaFileDialog::on_importButton_clicked()
         ));
 }
 
-void AddLuaFileDialog::on_CancelButton_clicked()
+void AddLuaFileDialog::on_btn_Cancel_clicked()
 {
     this->close();
 }
 
 // 文件基础名允许为空
-void AddLuaFileDialog::on_OKButton_clicked()
+void AddLuaFileDialog::on_btn_Confirm_clicked()
 {
     Lua::LuaData data;
 
     const FunctionLib::FileEditErrorType error = Lua::addLuaFile(
         mv_luaDir, ui->txt_Content->toPlainText(),
         ui->le_Name->text(), ui->le_Appid->text(), ui->le_FileName->text(),
-        ui->chk_ShouldFormat->isChecked(),
+        ui->chk_shouldInsertInfo->isChecked(), ui->chk_ShouldFormat->isChecked(),
         ui->le_Name->text().isEmpty(), ui->le_Appid->text().isEmpty(), ui->le_FileName->text().isEmpty(),
         &data, [this](const QString &filePath) -> bool
         {

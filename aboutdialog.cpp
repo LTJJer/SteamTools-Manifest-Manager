@@ -11,6 +11,8 @@ AboutDialog::AboutDialog(QWidget *parent)
     , ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
+
+    ui->lbl_Version->setText(QString("(STMM v%1)").arg(APP_VERSION));
 }
 
 AboutDialog::~AboutDialog()

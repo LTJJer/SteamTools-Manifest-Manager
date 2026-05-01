@@ -23,7 +23,6 @@
 #include <QTimer>
 #include <QClipboard>
 #include <QTextStream>
-#include <QStyleFactory>
 
 
 
@@ -33,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     , mv_LuaDir(QDir::fromNativeSeparators(QSettings("HKEY_CURRENT_USER\\Software\\Valve\\Steam", QSettings::NativeFormat).value("SteamPath").toString() + "/config/stplug-in"))
     , mv_steamExe(QDir::fromNativeSeparators(QSettings("HKEY_CURRENT_USER\\Software\\Valve\\Steam", QSettings::NativeFormat).value("SteamExe").toString()))
 {
+    ui->setupUi(this);
     FunctionLib::applyThemeStyle(this);
 
 
@@ -43,10 +43,6 @@ MainWindow::MainWindow(QWidget *parent)
         QTimer::singleShot(0, this, &MainWindow::close);
         return;
     }
-
-
-
-    ui->setupUi(this);
 
 
 
@@ -72,6 +68,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 
 
+    const bool shouldInsertInfo = QMessageBox::question(this, "添加 Lua 文件", "对于所有文件，是插入信息？") == QMessageBox::Yes;
     const bool shouldFormat = QMessageBox::question(this, "添加 Lua 文件", "对于所有文件，是否格式化？") == QMessageBox::Yes;
 
 
@@ -109,7 +106,7 @@ void MainWindow::dropEvent(QDropEvent *event)
         const FunctionLib::FileEditErrorType error = Lua::addLuaFile(
             mv_LuaDir, QTextStream(&file).readAll(),
             "", info.baseName(), info.baseName(),
-            shouldFormat, true, true, true,
+            shouldInsertInfo, shouldFormat, true, true, true,
             &data, [&keepOperation, &overwrite, &setMsgBoxText, &msg, &chk](const QString &filePath) -> bool
             {
                 if (keepOperation) return overwrite;
@@ -141,10 +138,9 @@ void MainWindow::refresh()
 
 
 
-    static QString lastSelectedAppid;
-
     const QListWidgetItem *lastSelectedItem = ui->lst_Items->currentItem();
     const bool hasLastSelectedItem = lastSelectedItem;
+    QString lastSelectedAppid;
     if (hasLastSelectedItem) lastSelectedAppid = lastSelectedItem->data(Constant::Role::appid).toString();
 
 
@@ -372,7 +368,9 @@ void MainWindow::on_btn_AddLuaFile_clicked()
     connect(&addDialog, &AddLuaFileDialog::addingFinished, this,
             [this](FunctionLib::FileEditErrorType error, const Lua::LuaData &data)
             {
-                if (!error) this->addItem(data.getPath(), data.getName(), data.getAppid());
+                Q_UNUSED(data)
+
+                if (!error) this->refresh();
             });
 
     addDialog.exec();
