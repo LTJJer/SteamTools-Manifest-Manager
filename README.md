@@ -1,8 +1,17 @@
-# Steam Tools Manifest Manager
+<div align="center">
+  <img src="Resources/Icons/icon.svg" alt="Steam Tools Manifest Manager" width="200px">
 
-一个用于管理 SteamTools 清单（Lua）文件的图形化工具
+  <h1>Steam Tools Manifest Manager</h1>
+  <p>一个用于管理 SteamTools 清单（Lua）文件的图形化工具</p>
 
 
+
+  [![Website](https://img.shields.io/badge/Website-blue)](https://steamtools-manifest-manager.pages.dev/)
+  
+  ![Platform](https://img.shields.io/badge/Platform-Windows-blue) [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE.txt) [![Qt](https://img.shields.io/badge/Qt6-gray?logo=qt)](https://www.qt.io/)
+
+  <br>
+</div>
 
 ## 功能
 
@@ -13,7 +22,8 @@
 - 打开 Lua 商店界面
 - 搜索 Lua
 - 关闭/重启 Steam
-- 还有打开一些友情站
+- 打开一些友情站
+- 更多功能...
 
 **小贴士**
 - 在 **主界面** 和 **添加清单（Lua）界面** 可以拖拽可以导入
