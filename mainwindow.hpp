@@ -52,6 +52,7 @@ private slots:
     void on_btn_OpenShop_clicked();
     void on_btn_RestartSteam_clicked();
     void on_btn_CloseSteam_clicked();
+    void on_btn_Exprot_clicked();
     void on_btn_Website_clicked();
     void on_btn_Search_clicked();
     void on_btn_Settings_clicked();

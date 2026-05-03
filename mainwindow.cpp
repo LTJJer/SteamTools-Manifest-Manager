@@ -10,6 +10,7 @@
 #include "openwebsitedialog.hpp"
 #include "lua.hpp"
 #include "settingsdialog.hpp"
+#include "exportdialog.hpp"
 
 #include <QFile>
 #include <QFileInfo>
@@ -513,6 +514,12 @@ void MainWindow::on_btn_RestartSteam_clicked()
 void MainWindow::on_btn_CloseSteam_clicked()
 {
     FunctionLib::closeSteamDetached();
+}
+
+void MainWindow::on_btn_Exprot_clicked()
+{
+    ExportDialog dlg(this);
+    dlg.exec();
 }
 
 void MainWindow::on_btn_Website_clicked()

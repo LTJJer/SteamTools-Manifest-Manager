@@ -25,6 +25,7 @@ QT += widgets
 # 源文件
 HEADERS += \
     constant.hpp \
+    exportdialog.hpp \
     lua.hpp \
     mainwindow.hpp \
     functionlib.hpp \
@@ -38,6 +39,7 @@ HEADERS += \
 
 SOURCES += \
     constant.cpp \
+    exportdialog.cpp \
     lua.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -51,6 +53,7 @@ SOURCES += \
     wechatdonatedialog.cpp
 
 FORMS += \
+    exportdialog.ui \
     mainwindow.ui \
     editdialog.ui \
     addluafiledialog.ui \
