@@ -242,12 +242,7 @@ void MainWindow::filterItems()
     }
 
     ui->le_Filter->setProperty("valid", doesContentValid);
-    if (auto style = ui->le_Filter->style())
-    {
-        style->unpolish(ui->le_Filter);
-        style->polish(ui->le_Filter);
-
-    }
+    FunctionLib::repolish(ui->le_Filter);
     ui->le_Filter->setToolTip(doesContentValid ? "" : contentPattern.errorString());
 
 
@@ -358,8 +353,13 @@ void MainWindow::on_btn_ToggleLuaEnabled_clicked()
     item->setData(Constant::Role::path, file.fileName());
 
     if (QWidget *widget = ui->lst_Items->itemWidget(item))
+    {
         if (QLabel *lbl_Appid = widget->findChild<QLabel*>("lbl_Appid"))
-            lbl_Appid->setStyleSheet(newSuffix == Constant::luaEnabledSuffix ? "" : Constant::ItemDisabledStyleSheet);
+        {
+            lbl_Appid->setProperty("valid", newSuffix == Constant::luaEnabledSuffix);
+            FunctionLib::repolish(lbl_Appid);
+        }
+    }
 }
 
 void MainWindow::on_btn_AddLuaFile_clicked()
@@ -574,10 +574,8 @@ void MainWindow::addItem(const QString &path, const QString &name, const QString
     QLabel *lbl_Appid = new QLabel(appid, widget);
     lbl_Appid->setObjectName("lbl_Appid");
     hLayout->addWidget(lbl_Appid, 1);
-    if (QFileInfo(path).suffix() == Constant::luaDisabledSuffix)
-    {
-        lbl_Appid->setStyleSheet(Constant::ItemDisabledStyleSheet);
-    }
+    lbl_Appid->setProperty("valid", QFileInfo(path).suffix() == Constant::luaEnabledSuffix);
+    FunctionLib::repolish(lbl_Appid);
 
     QLabel *lbl_Name = new QLabel(name, widget);
     lbl_Name->setObjectName("lbl_Name");

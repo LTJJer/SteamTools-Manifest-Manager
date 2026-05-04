@@ -13,6 +13,7 @@
 #include <QFileInfo>
 #include <QApplication>
 #include <QSettings>
+#include <QStyle>
 #include <qt_windows.h>
 
 
@@ -221,5 +222,17 @@ void applyThemeStyle(QWidget *widget)
 
     const HWND hwnd = reinterpret_cast<HWND>(widget->winId());
     ::SetWindowPos(hwnd, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+}
+
+
+
+void repolish(QWidget *widget)
+{
+    if (!widget) return;
+    
+    if (QStyle *style = widget->style())
+    {
+        style->polish(widget);
+    }
 }
 }

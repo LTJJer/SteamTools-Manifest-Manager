@@ -17,7 +17,6 @@ constexpr int appid = Qt::UserRole + 2;
 
 constexpr char luaEnabledSuffix[]  = "lua";
 constexpr char luaDisabledSuffix[] = "disabled";
-constexpr char ItemDisabledStyleSheet[] = "color: #FF4444";
 
 
 

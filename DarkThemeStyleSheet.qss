@@ -10,6 +10,10 @@ QWidget:disabled {
   color: #505050;
 }
 
+*[valid=false] {
+  color: #E04040;
+}
+
 QPushButton {
   padding: 6px 12px;
   min-height: 20px;
@@ -153,9 +157,6 @@ QLineEdit, QDateTimeEdit, QSpinBox, QDoubleSpinBox, QTextEdit, QPlainTextEdit, Q
   border: 1px solid #404040;
   border-radius: 4px;
   color: #D0D0D0;
-}
-QLineEdit[valid=false], QDateTimeEdit[valid=false], QSpinBox[valid=false], QDoubleSpinBox[valid=false], QTextEdit[valid=false], QPlainTextEdit[valid=false], QComboBox[valid=false] {
-  color: #E04040;
 }
 QLineEdit:hover, QDateTimeEdit:hover, QSpinBox:hover, QDoubleSpinBox:hover, QTextEdit:hover, QPlainTextEdit:hover, QComboBox:hover {
   background-color: #383838;

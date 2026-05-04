@@ -28,7 +28,7 @@ $text-muted:       #C0C0C0 !default;
 $text-readonly:    #A0A0A0 !default;
 $text-placeholder: #606060 !default;
 $text-disabled:    #505050 !default;
-$text-danger:      #E04040 !default;
+$text-invalid:         #E04040 !default;
 $text-inverse:     #FFFFFF !default;
 
 // 控件
@@ -154,6 +154,10 @@ QWidget {
   @include disabled;
 }
 
+*[valid="false"] {
+  color: $text-invalid;
+}
+
 // ==================== 按钮 ====================
 QPushButton {
   padding: $btn-padding;
@@ -270,8 +274,6 @@ QTabWidget::pane {
   @include border;
   border-radius: $radius-medium;
   color: $text-secondary;
-
-  &[valid="false"] { color: $text-danger; }
 
   &:hover    { @include input-hover; }
   &:focus    { @include input-focus; }

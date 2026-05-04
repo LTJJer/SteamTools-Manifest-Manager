@@ -81,4 +81,6 @@ QString getSystemThemeStyleSheet();
 QString getThemeStyleSheet();
 
 void applyThemeStyle(QWidget *widget);
+
+void repolish(QWidget *widget);
 }
