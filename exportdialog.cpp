@@ -3,9 +3,10 @@
 
 
 
-ExportDialog::ExportDialog(QWidget *parent)
+ExportDialog::ExportDialog(const QString &sourceLuaPath, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::ExportDialog)
+    , mv_sourceLuaPath(sourceLuaPath)
 {
     ui->setupUi(this);
 }

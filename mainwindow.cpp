@@ -518,7 +518,7 @@ void MainWindow::on_btn_CloseSteam_clicked()
 
 void MainWindow::on_btn_Exprot_clicked()
 {
-    ExportDialog dlg(this);
+    ExportDialog dlg(mv_LuaDir, this);
     dlg.exec();
 }
 
