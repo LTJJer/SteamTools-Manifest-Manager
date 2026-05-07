@@ -14,7 +14,7 @@ QString SettingsDialog::getSettingsName(SettingsItems item)
     switch (item)
     {
     case Style:
-        return "Display/Style";
+        return "Settings/Display/Style";
 
     default:
         return "";
