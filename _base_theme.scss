@@ -263,8 +263,12 @@ QTabBar::tab {
 
 QTabWidget::pane {
   @include border;
-  border-top: none;
-  margin-top: -$border-width;
+}
+
+QTabWidget::pane, QTabWidget QStackedWidget,
+QTabWidget QStackedWidget > QWidget {
+  border-radius: $radius-medium;
+  border-top-left-radius: 0;
 }
 
 // ==================== 输入框类（基础 + 交互态聚合） ====================

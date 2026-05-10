@@ -147,8 +147,12 @@ QTabBar::tab:disabled {
 
 QTabWidget::pane {
   border: 1px solid #404040;
-  border-top: none;
-  margin-top: -1px;
+}
+
+QTabWidget::pane, QTabWidget QStackedWidget,
+QTabWidget QStackedWidget > QWidget {
+  border-radius: 4px;
+  border-top-left-radius: 0;
 }
 
 QLineEdit, QDateTimeEdit, QSpinBox, QDoubleSpinBox, QTextEdit, QPlainTextEdit, QComboBox {
