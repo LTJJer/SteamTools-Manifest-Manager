@@ -1,14 +1,12 @@
 <RCC>
     <qresource prefix="/">
-        <file>Resources/LTJJ.png</file>
-        <file>Resources/Icons/icon.ico</file>
-        <file>Resources/Icons/icon100p.png</file>
+        <file>resources/LT_JJ.png</file>
+        <file>resources/icons/icon.ico</file>
+        <file>resources/icons/icon100p.png</file>
+        <file alias="resources/微信捐赠二维码">resources/WeChat_donate_QR_code.png</file>
     </qresource>
     <qresource prefix="/StyleSheet">
         <file>DarkThemeStyleSheet.qss</file>
         <file>LightThemeStyleSheet.qss</file>
-    </qresource>
-    <qresource prefix="/Resources">
-        <file>WeChatDonateQRCode.png</file>
     </qresource>
 </RCC>
