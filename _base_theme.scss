@@ -28,7 +28,7 @@ $text-muted:       #C0C0C0 !default;
 $text-readonly:    #A0A0A0 !default;
 $text-placeholder: #606060 !default;
 $text-disabled:    #505050 !default;
-$text-invalid:         #E04040 !default;
+$text-invalid:     #E04040 !default;
 $text-inverse:     #FFFFFF !default;
 
 // 控件
@@ -38,7 +38,7 @@ $scrollbar-handle:       #585858 !default;
 $scrollbar-handle-hover: #686868 !default;
 
 // 透明色（箭头专用，规避 Qt 渲染 bug）
-$transparent:       rgba(255, 255, 255, 0) !default;
+$transparent: rgba(255, 255, 255, 0) !default;
 
 // ==================== 尺寸 / 间距 / 圆角 ====================
 $border-width:             1px;
@@ -52,11 +52,11 @@ $radio-size:               8px;
 $checkbox-size:            18px;
 
 $btn-padding:              6px 12px;
-$input-padding-horizontal: 4px;
 $input-padding-vertical:   4px;
+$input-padding-horizontal: 4px;
 $input-padding:            $input-padding-vertical $input-padding-horizontal;
 $drop-btn-width:           20px;
-$combo-min-height:         calc($input-min-height + $input-padding-vertical * 2);
+$combo-min-height:         $input-min-height + $input-padding-vertical * 2;
 $combo-padding-left:       8px;
 $combo-padding-right:      28px;
 
@@ -73,9 +73,8 @@ $arrow-transparent:        $arrow-border-width solid $transparent;
 $inputs:        "QLineEdit, QDateTimeEdit, QSpinBox, QDoubleSpinBox, QTextEdit, QPlainTextEdit";
 $inputs-single: "QLineEdit, QDateTimeEdit, QSpinBox, QDoubleSpinBox";
 
-// ==================== 混合宏 ====================
+// ==================== 混合宏 / 占位符 ====================
 
-/// 通用悬浮 / 按下两态
 @mixin hover-pressed($bg-hover, $bg-pressed, $color-hover: null, $color-pressed: null) {
   &:hover {
     background-color: $bg-hover;
@@ -87,83 +86,85 @@ $inputs-single: "QLineEdit, QDateTimeEdit, QSpinBox, QDoubleSpinBox";
   }
 }
 
-/// 禁用态
-@mixin disabled($bg: $bg-disabled, $color: $text-disabled) {
+@mixin disabled($bg: $bg-disabled, $color: $text-disabled, $border: null) {
   &:disabled {
     background-color: $bg;
     color: $color;
+    @if $border { border-color: $border; }
   }
 }
 
-/// 输入框悬浮态
-@mixin input-hover {
-  background-color: $bg-raised;
-  border-color: $border-hover;
-}
-
-/// 输入框聚焦态
-@mixin input-focus {
-  border-color: $accent;
-}
-
-/// 输入框禁用态
-@mixin input-disabled {
-  background-color: $bg-base;
-  border-color: $border-disabled;
-  color: $text-disabled;
-}
-
-/// 输入框只读态
-@mixin input-readonly {
-  background-color: $bg-base;
-  color: $text-readonly;
-}
-
-/// 统一边框
 @mixin border($color: $border-default) {
   border: $border-width solid $color;
 }
 
-/// 背景色 + 边框色同色填充（指示器 checked 态）
 @mixin fill($color) {
   background-color: $color;
   border-color: $color;
 }
 
-/// 文本选中样式
-@mixin selection($bg, $color) {
+@mixin selection($bg: $bg-raised, $color: $text-primary) {
   selection-background-color: $bg;
   selection-color: $color;
 }
 
-/// 箭头三态颜色（hover / pressed / disabled），$prop 为 border-top-color 或 border-bottom-color
 @mixin arrow-state-colors($arrow, $prop) {
   &:hover::#{$arrow}   { #{$prop}: $text-secondary; }
   &:pressed::#{$arrow} { #{$prop}: $text-muted; }
   &:disabled::#{$arrow} { #{$prop}: $text-disabled; }
 }
 
+%arrow-base {
+  width: 0;
+  height: 0;
+  border-left: $arrow-transparent;
+  border-right: $arrow-transparent;
+}
+
+%radius-medium {
+  border-radius: $radius-medium;
+}
+
+@mixin list-view-base($border-color: null) {
+  background-color: $bg-surface;
+  border: if($border-color, $border-width solid $border-color, none);
+  @include selection;
+
+  &::item {
+    &:hover { background-color: $bg-subtle; }
+    &:pressed { background-color: $bg-base; }
+    &:selected {
+      background-color: $bg-raised;
+      &:hover { background-color: $list-item-hover; }
+    }
+  }
+}
+
+@mixin spin-drop-btn {
+  width: $drop-btn-width;
+  @include hover-pressed($bg-raised, $bg-base);
+  @include disabled;
+}
+
 // ==================== 全局基础样式 ====================
 QWidget {
   margin: 0;
   padding: 0;
+  outline: none;
   background-color: $bg-darkest;
   color: $text-primary;
-  outline: none;
 
-  @include disabled;
+  &:disabled { color: $text-disabled; }
 }
 
-*[valid="false"] {
-  color: $text-invalid;
-}
+*[valid="false"] { color: $text-invalid; }
 
 // ==================== 按钮 ====================
 QPushButton {
-  padding: $btn-padding;
   min-height: $input-min-height;
+  padding: $btn-padding;
+  @extend %radius-medium;
   background-color: $btn-bg;
-  border-radius: $radius-medium;
 
   @include hover-pressed($bg-raised, $bg-deep, $text-secondary, $text-muted);
   @include disabled;
@@ -177,19 +178,24 @@ QRadioButton, QCheckBox {
   &::indicator {
     background-color: $bg-surface;
     @include border;
-
     @include hover-pressed($bg-raised, $bg-base);
+
     &:hover   { border-color: $border-hover; }
     &:pressed { border-color: $accent; }
 
-    &:checked         { @include fill($accent); }
-    &:checked:hover   { @include fill($accent-hover); }
-    &:checked:pressed { @include fill($accent-active); }
+    &:checked {
+      @include fill($accent);
+      &:hover   { @include fill($accent-hover); }
+      &:pressed { @include fill($accent-active); }
+    }
 
     &:disabled {
       background-color: $bg-base;
       border-color: $border-disabled;
-      &:checked { background-color: $bg-raised; border-color: $border-checked-disabled; }
+      &:checked {
+        background-color: $bg-raised;
+        border-color: $border-checked-disabled;
+      }
     }
   }
 }
@@ -197,7 +203,7 @@ QRadioButton, QCheckBox {
 QRadioButton::indicator {
   width: $radio-size;
   height: $radio-size;
-  border-radius: calc($radio-size / 2);  // 正圆
+  border-radius: calc($radio-size / 2);
 }
 
 QCheckBox::indicator {
@@ -208,9 +214,9 @@ QCheckBox::indicator {
 
 // ==================== 分组框 ====================
 QGroupBox {
-  @include border;
-  border-radius: $radius-medium;
   margin-top: $group-title-offset;
+  @include border;
+  @extend %radius-medium;
 
   &::title {
     subcontrol-origin: margin;
@@ -221,80 +227,80 @@ QGroupBox {
 
 // ==================== 列表视图 ====================
 QListView {
-  background-color: $bg-surface;
-  border: none;
-  selection-background-color: $bg-raised;
-  selection-color: $text-primary;
+  @include list-view-base;
   alternate-background-color: $bg-subtle;
 
   &::item {
-    padding-left: $input-padding-horizontal;
     min-height: $input-min-height;
-
-    &:hover { background-color: $bg-subtle; }
-    &:pressed { background-color: $bg-base; }
-    &:selected:hover {
-      background-color: $list-item-hover;
-    }
+    padding-left: $input-padding-horizontal;
   }
 }
 
 // ==================== 标签页 ====================
 QTabBar::tab {
-  padding: $btn-padding;
   min-height: $input-min-height;
   margin-right: $tab-gap;
+  padding: $btn-padding;
   background-color: $bg-base;
   @include border;
   border-bottom: none;
   border-top-left-radius: $radius-medium;
   border-top-right-radius: $radius-medium;
 
-  &:hover { background-color: $bg-raised; color: $text-secondary; }
+  &:hover {
+    background-color: $bg-raised;
+    color: $text-secondary;
+  }
+
   &:selected {
     background-color: $bg-raised;
     color: $text-primary;
     border-top: $border-width solid $accent;
   }
 
-  @include disabled($bg-disabled, $text-disabled);
-  &:disabled { border-color: $border-disabled; }
+  @include disabled($border: $border-disabled);
 }
 
-QTabWidget::pane {
-  @include border;
-}
-
-QTabWidget::pane, QTabWidget QStackedWidget,
+QTabWidget::pane,
+QTabWidget QStackedWidget,
 QTabWidget QStackedWidget > QWidget {
-  border-radius: $radius-medium;
+  @include border;
+  @extend %radius-medium;
   border-top-left-radius: 0;
 }
 
-// ==================== 输入框类（基础 + 交互态聚合） ====================
+// 去除 QStackedWidget 及其子件的默认边框叠加
+QTabWidget QStackedWidget,
+QTabWidget QStackedWidget > QWidget {
+  border: none;
+}
+
+// ==================== 输入框类 ====================
 #{$inputs}, QComboBox {
   min-height: $input-min-height;
   background-color: $bg-surface;
   @include border;
-  border-radius: $radius-medium;
+  @extend %radius-medium;
   color: $text-secondary;
 
-  &:hover    { @include input-hover; }
-  &:focus    { @include input-focus; }
-  &:disabled { @include input-disabled; }
+  &:hover {
+    background-color: $bg-raised;
+    border-color: $border-hover;
+  }
+  &:focus { border-color: $accent; }
+
+  @include disabled($bg: $bg-base, $color: $text-disabled, $border: $border-disabled);
 }
 
 #{$inputs-single} { padding: $input-padding; }
 
 #{$inputs} {
   &:read-only {
-    @include input-readonly;
-    @include selection($bg-raised, $text-primary);
+    background-color: $bg-base;
+    color: $text-readonly;
+    @include selection;
   }
-
-  &:disabled {
-    @include selection($bg-raised, $text-disabled);
-  }
+  &:disabled { @include selection($color: $text-disabled); }
 }
 
 #{$inputs}, QComboBox:editable {
@@ -305,11 +311,12 @@ QLineEdit::placeholder { color: $text-placeholder; }
 
 // ==================== 下拉框 ====================
 QComboBox {
+  min-height: $combo-min-height;
   padding-left: $combo-padding-left;
   padding-right: $combo-padding-right;
-  min-height: $combo-min-height;
 
-  &:editable { padding-right: 8px; }
+  &:editable { padding-right: $combo-padding-left; }
+
   &:on {
     background-color: $bg-raised;
     border-color: $accent;
@@ -318,75 +325,59 @@ QComboBox {
   &::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
-    width: $drop-btn-width;
+    @include spin-drop-btn;
     border-top-right-radius: $radius-medium;
     border-bottom-right-radius: $radius-medium;
-
-    @include hover-pressed($bg-raised, $bg-base);
     @include arrow-state-colors(down-arrow, border-top-color);
-    @include disabled;
   }
 
-  QAbstractItemView {
-    background-color: $bg-surface;
-    @include border($accent);
-    selection-background-color: $bg-raised;
-    selection-color: $text-primary;
-
-    &::item {
-      &:hover    { background-color: $bg-subtle; }
-      &:selected { background-color: $bg-raised; }
-    }
-  }
+  QAbstractItemView { @include list-view-base($accent); }
 }
 
 // ==================== 数字 / 日期编辑框按钮 ====================
 QAbstractSpinBox {
   &::up-button,
   &::down-button {
-    width: $drop-btn-width;
-    @include hover-pressed($bg-raised, $bg-base);
-    @include disabled;
+    @include spin-drop-btn;
   }
 
-  &::up-button   { border-top-right-radius: $radius-medium; }
-  &::down-button { border-bottom-right-radius: $radius-medium; }
+  &::up-button {
+    border-top-right-radius: $radius-medium;
+    @include arrow-state-colors(up-arrow, border-bottom-color);
+  }
+
+  &::down-button {
+    border-bottom-right-radius: $radius-medium;
+    @include arrow-state-colors(down-arrow, border-top-color);
+  }
 }
 
 // ==================== 箭头样式 ====================
 QComboBox::down-arrow,
-QAbstractSpinBox::up-arrow,
 QAbstractSpinBox::down-arrow {
-  width: 0;
-  height: 0;
-  border-left: $arrow-transparent;
-  border-right: $arrow-transparent;
+  @extend %arrow-base;
+  border-top: $arrow-border-width solid $text-primary;
 }
 
-QAbstractSpinBox::up-arrow { border-bottom: $arrow-border-width solid $text-primary; }
-
-QComboBox::down-arrow,
-QAbstractSpinBox::down-arrow { border-top: $arrow-border-width solid $text-primary; }
-
-QAbstractSpinBox::up-button   { @include arrow-state-colors(up-arrow, border-bottom-color); }
-QAbstractSpinBox::down-button { @include arrow-state-colors(down-arrow, border-top-color); }
+QAbstractSpinBox::up-arrow {
+  @extend %arrow-base;
+  border-bottom: $arrow-border-width solid $text-primary;
+}
 
 // ==================== 滚动条 ====================
-QScrollBar {
-  &::add-page:vertical,
-  &::sub-page:vertical { background: none; }
+QScrollBar:vertical {
+  width: $scrollbar-width;
+  background: $bg-surface;
 
-  &:vertical {
-    background: $bg-surface;
-    width: $scrollbar-width;
-  }
+  &::add-line,
+  &::sub-line { height: 0; }
 
-  &::add-line:vertical,
-  &::sub-line:vertical { height: 0; }
+  &::add-page,
+  &::sub-page { background: none; }
 
-  &::handle:vertical {
-    background: $scrollbar-handle;
+  &::handle {
     min-height: $scrollbar-min-height;
+    background: $scrollbar-handle;
 
     &:hover   { background: $scrollbar-handle-hover; }
     &:pressed { background: $accent; }
