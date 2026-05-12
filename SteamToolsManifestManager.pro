@@ -80,7 +80,7 @@ OTHER_FILES += \
 
 
 # 应用信息
-RC_ICONS = Resources/Icons/icon.ico
+RC_ICONS = resources/icons/icon.ico
 
 VERSION = 1.8.2
 MAKE_TARGET_COMPANY = "LT_JJ"
@@ -121,7 +121,7 @@ win32 {
     deploy.commands = E:/Qt/Tools/deploy.bat             \
                     \"$$system_path($${BUILD_EXE})\"     \
                     \"$$system_path($${DEPLOY_EXE})\"    \
-                    \"$$system_path($${BUILD_README})\"  \
+                    \"\"  \
                     \"$$system_path($${BUILD_LICENSE})\" \
                     \"$$system_path($${WINDEPLOYQT})\"   \
                     \"--no-translations --no-system-d3d-compiler --no-opengl-sw -no-svg -no-network --skip-plugin-types imageformats\" \
