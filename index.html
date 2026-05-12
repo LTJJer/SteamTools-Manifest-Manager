@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SteamTools Manifest Manager</title>
-    <link rel="icon" type="image/svg+xml" href="Resources/Icons/icon.svg">
+    <link rel="icon" type="image/svg+xml" href="resources/icons/icon.svg">
     <style>
         * {
             margin: 0;
@@ -392,7 +392,7 @@
     <div class="container">
         <header>
             <div class="header-content">
-                <img src="Resources/Icons/icon.svg" alt="SteamTools Manifest Manager 图标">
+                <img src="resources/icons/icon.svg" alt="SteamTools Manifest Manager 图标">
                 <h1>SteamTools Manifest Manager</h1>
             </div>
         </header>
@@ -430,31 +430,34 @@
 
         <div class="toast" id="toast">复制成功</div>
 
+        <section class="screenshots">
+            <h2 class="section-title">界面截图</h2>
+            <br>
+            <img src="resources/preview/dark.png" alt="dark">
+            <img src="resources/preview/light.png" alt="light">
+            <br>
+            <br>
+        </section>
+
         <section class="features">
             <h2 class="section-title">功能</h2>
             <ul>
-                <li>添加/删除/启用禁用/编辑/打开/格式化 Lua</li>
-                <li>复制 Lua 的信息（前提是有相关信息）</li>
-                <li>运行 Lua 的 AppID 指向的游戏</li>
-                <li>打开 Lua 商店界面</li>
-                <li>搜索 Lua</li>
+                <li>添加/删除/启用禁用/编辑/打开/格式化 Lua 文件</li>
+                <li>复制 Lua 里的游戏信息（前提是有信息）</li>
+                <li>运行 Lua 里的 AppID 指向的游戏</li>
+                <li>打开 Lua 里的 AppID 指向的商店界面</li>
+                <li>在 <strong>主界面</strong> 和 <strong>添加清单（Lua）界面</strong> 拖拽导入文件</li>
                 <li>关闭/重启 Steam</li>
-                <li>打开友情站</li>
+                <li>搜索</li>
+                <li>打开一些友情站</li>
                 <li>更多功能...</li>
-            </ul>
-        </section>
-
-        <section class="tips">
-            <h2>小贴士</h2>
-            <ul>
-                <li>在主界面和添加清单（Lua）界面可以拖拽导入文件</li>
             </ul>
         </section>
 
         <section class="warning">
             <h2>注意</h2>
             <ul>
-                <li>格式化会删除所有语法不正确及非 addappid 的内容，虽然没什么影响，但也请谨慎使用</li>
+                <li>格式化会 <strong>删除所有语法不正确及非 addappid 的内容</strong>，虽然没什么影响，但也请谨慎使用</li>
             </ul>
         </section>
 
@@ -479,7 +482,7 @@
         <section class="author-section">
             <div class="github-links">
                 <a href="https://github.com/LTJJer/SteamTools-Manifest-Manager" target="_blank" class="github-link">
-                    <img src="Resources/GitHub.svg" alt="GitHub">
+                    <img src="resources/GitHub.svg" alt="GitHub">
                     项目仓库
                 </a>
             </div>

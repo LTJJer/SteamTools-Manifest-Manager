@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="Resources/Icons/icon.svg" alt="Steam Tools Manifest Manager" width="200px">
+  <img src="resources/icons/icon.svg" alt="SteamTools Manifest Manager" width="200px">
 
-  <h1>Steam Tools Manifest Manager</h1>
+  <h1>SteamTools Manifest Manager</h1>
   <p>一个用于管理 SteamTools 清单（Lua）文件的图形化工具</p>
 
 
@@ -11,22 +11,25 @@
   ![Platform](https://img.shields.io/badge/Platform-Windows-blue) [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE.txt) [![Qt](https://img.shields.io/badge/Qt6-gray?logo=qt)](https://www.qt.io/)
 
   <br>
+
+  <h2>界面截图</h2>
+
+  <img src="resources/preview/dark.png" alt="dark">
+  <img src="resources/preview/light.png" alt="light">
 </div>
 
 ## 功能
 
 **比如你可以：**
-- 添加/删除/启用禁用/编辑/打开/格式化 Lua
-- 复制 Lua 的信息（前提是有相关信息）
-- 运行 Lua 的 AppID 指向的游戏
-- 打开 Lua 商店界面
-- 搜索 Lua
+- 添加/删除/启用禁用/编辑/打开/格式化 Lua 文件
+- 复制 Lua 里的游戏信息（前提是有信息）
+- 运行 Lua 里的 AppID 指向的游戏
+- 打开 Lua 里的 AppID 指向的商店界面
+- 在 **主界面** 和 **添加清单（Lua）界面** 拖拽导入文件
 - 关闭/重启 Steam
+- 搜索
 - 打开一些友情站
 - 更多功能...
-
-**小贴士**
-- 在 **主界面** 和 **添加清单（Lua）界面** 可以拖拽可以导入
 
 **注意：**
 - 格式化会**删除所有语法不正确及非 addappid 的内容**，虽然没什么影响，但也请谨慎使用
