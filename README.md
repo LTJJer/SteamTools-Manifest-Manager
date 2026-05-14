@@ -2,7 +2,9 @@
 
 我还是去做其他项目吧
 
+## 此项目已废弃
 
+---
 
 <div align="center">
   <img src="Resources/Icons/icon.svg" alt="Steam Tools Manifest Manager" width="200px">
