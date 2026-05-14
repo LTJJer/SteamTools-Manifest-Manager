@@ -1,3 +1,9 @@
+# 呜呜呜我不打算做了，其他管理器功能比我强大完善多了，我去用 FluentInstall 去了——
+
+我还是去做其他项目吧
+
+
+
 <div align="center">
   <img src="Resources/Icons/icon.svg" alt="Steam Tools Manifest Manager" width="200px">
 
