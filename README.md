@@ -3,6 +3,7 @@
 我还是去做其他项目吧
 
 ## 此项目已废弃
+## This project has been abandoned.
 
 ---
 
